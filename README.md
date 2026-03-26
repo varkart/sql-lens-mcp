@@ -21,11 +21,14 @@ sql-mcp works with any MCP-compatible client. We provide detailed setup guides f
 | Client | Platform | Best For | Setup Difficulty |
 |--------|----------|----------|------------------|
 | [Claude Desktop](docs/clients/claude-desktop.md) | macOS, Windows, Linux | General AI chat with database access | ⭐ Easy |
+| [Claude Code](docs/clients/claude-code.md) | VS Code | VS Code with Claude, MCP Apps support | ⭐ Easy |
 | [Cline](docs/clients/cline.md) | VS Code | VS Code users, coding assistance | ⭐ Easy |
 | [Cursor](docs/clients/cursor.md) | macOS, Windows, Linux | AI-native code editor | ⭐ Easy |
 | [Windsurf](docs/clients/windsurf.md) | macOS, Windows, Linux | Multi-step flows, Codeium users | ⭐ Easy |
 | [Continue](docs/clients/continue.md) | VS Code, JetBrains | Open-source, IDE integration | ⭐⭐ Medium |
 | [Zed](docs/clients/zed.md) | macOS, Linux | High-performance editing | ⭐ Easy |
+| [JetBrains IDEs](docs/clients/jetbrains.md) | All platforms | IntelliJ, PyCharm, WebStorm users | ⭐⭐ Medium |
+| [ChatGPT Desktop](docs/clients/chatgpt.md) | macOS, Windows, Linux | OpenAI ecosystem (requires hosting) | ⭐⭐⭐ Complex |
 
 **[See all client setup guides →](docs/clients/)**
 
@@ -95,11 +98,14 @@ sql-mcp works with any MCP-compatible client. Choose your client below for detai
 | Client | Platform | Setup Guide |
 |--------|----------|-------------|
 | **Claude Desktop** | macOS, Windows, Linux | [Setup Guide →](docs/clients/claude-desktop.md) |
+| **Claude Code** | VS Code Extension | [Setup Guide →](docs/clients/claude-code.md) |
 | **Cline** (VS Code) | VS Code Extension | [Setup Guide →](docs/clients/cline.md) |
 | **Cursor** | macOS, Windows, Linux | [Setup Guide →](docs/clients/cursor.md) |
 | **Windsurf** | macOS, Windows, Linux | [Setup Guide →](docs/clients/windsurf.md) |
 | **Continue** | VS Code, JetBrains | [Setup Guide →](docs/clients/continue.md) |
 | **Zed** | macOS, Linux | [Setup Guide →](docs/clients/zed.md) |
+| **JetBrains IDEs** | All platforms | [Setup Guide →](docs/clients/jetbrains.md) |
+| **ChatGPT Desktop** | macOS, Windows, Linux | [Setup Guide →](docs/clients/chatgpt.md) |
 
 **See all clients**: [docs/clients/](docs/clients/) for complete setup guides and configuration examples.
 

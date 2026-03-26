@@ -24,11 +24,14 @@ All clients use a similar configuration pattern:
 | Client | Platform | MCP Support | Setup Difficulty | Best For |
 |--------|----------|-------------|------------------|----------|
 | [Claude Desktop](claude-desktop.md) | macOS, Windows, Linux | ✅ Full | ⭐ Easy | General AI chat with database access |
+| [Claude Code](claude-code.md) | VS Code | ✅ Full | ⭐ Easy | VS Code with Claude, MCP Apps support |
 | [Cline](cline.md) | VS Code | ✅ Full | ⭐ Easy | VS Code users, coding assistance |
 | [Cursor](cursor.md) | macOS, Windows, Linux | ✅ Full (Pro) | ⭐ Easy | AI-native code editor |
 | [Windsurf](windsurf.md) | macOS, Windows, Linux | ✅ Full (Pro) | ⭐ Easy | Codeium users, multi-step flows |
 | [Continue](continue.md) | VS Code, JetBrains | ✅ Full | ⭐⭐ Medium | Open-source, IDE integration |
 | [Zed](zed.md) | macOS, Linux | ✅ Full | ⭐ Easy | High-performance editing |
+| [JetBrains IDEs](jetbrains.md) | All platforms | ✅ Full (2025.1+) | ⭐⭐ Medium | IntelliJ, PyCharm, WebStorm users |
+| [ChatGPT Desktop](chatgpt.md) | macOS, Windows, Linux | ✅ Beta | ⭐⭐⭐ Complex | OpenAI ecosystem, requires hosting |
 
 ## Setup by Use Case
 
@@ -38,11 +41,29 @@ All clients use a similar configuration pattern:
 - Easy configuration
 - Best for non-developers or general use
 
-### For Software Development
-**Recommended**: [Cline](cline.md) or [Cursor](cursor.md)
-- Integrated with your code editor
+### For VS Code Users
+**Recommended**: [Claude Code](claude-code.md) or [Cline](cline.md)
+- Native VS Code integration
+- Claude Code has MCP Apps support
+- Perfect for AI-assisted database development
+
+### For JetBrains Users
+**Recommended**: [JetBrains IDEs](jetbrains.md)
+- Built-in MCP client (2025.1+)
+- Deep IDE integration with AI Assistant
+- Ideal for Java, Python, Web development
+
+### For AI-Native Code Editors
+**Recommended**: [Cursor](cursor.md) or [Windsurf](windsurf.md)
+- Purpose-built for AI-assisted coding
 - Schema-aware code generation
 - Perfect for database-driven development
+
+### For OpenAI Ecosystem
+**Recommended**: [ChatGPT Desktop](chatgpt.md)
+- Works with ChatGPT Plus/Pro
+- Requires remote hosting setup
+- Good for OpenAI-centric workflows
 
 ### For Open Source / Self-Hosted
 **Recommended**: [Continue](continue.md)
@@ -341,24 +362,29 @@ Insert 3 sample users into the test database, then show me all users
 | Client | macOS | Windows | Linux |
 |--------|-------|---------|-------|
 | Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/Claude/claude_desktop_config.json` |
+| Claude Code | `~/Library/Application Support/Code/User/settings.json` | `%APPDATA%\Code\User\settings.json` | `~/.config/Code/User/settings.json` |
 | Cline | `~/.continue/config.json` | `%USERPROFILE%\.continue\config.json` | `~/.continue/config.json` |
 | Cursor | `~/Library/Application Support/Cursor/User/settings.json` | `%APPDATA%\Cursor\User\settings.json` | `~/.config/Cursor/User/settings.json` |
 | Windsurf | `~/Library/Application Support/Windsurf/User/settings.json` | `%APPDATA%\Windsurf\User\settings.json` | `~/.config/Windsurf/User/settings.json` |
 | Continue | `~/.continue/config.json` | `%USERPROFILE%\.continue\config.json` | `~/.continue/config.json` |
 | Zed | `~/.config/zed/settings.json` | N/A | `~/.config/zed/settings.json` |
+| JetBrains IDEs | `~/Library/Application Support/JetBrains/<IDE>/options/mcp-client.xml` | `%APPDATA%\JetBrains\<IDE>\options\mcp-client.xml` | `~/.config/JetBrains/<IDE>/options/mcp-client.xml` |
+| ChatGPT Desktop | Developer Mode UI | Developer Mode UI | Developer Mode UI |
 
 ## Client Feature Comparison
 
-| Feature | Claude Desktop | Cline | Cursor | Windsurf | Continue | Zed |
-|---------|---------------|-------|--------|----------|----------|-----|
-| Free Tier | ✅ | ✅ | ⚠️ Limited | ⚠️ Limited | ✅ | ✅ |
-| Code Editor | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Multi-turn Conversations | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Inline Editing | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| File Access | ⚠️ Via MCP | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Terminal Integration | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Collaboration | ❌ | ❌ | ⚠️ Share | ⚠️ Share | ❌ | ✅ Real-time |
-| Open Source | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Feature | Claude Desktop | Claude Code | Cline | Cursor | Windsurf | Continue | Zed | JetBrains | ChatGPT |
+|---------|---------------|-------------|-------|--------|----------|----------|-----|-----------|---------|
+| Free Tier | ✅ | ✅ | ✅ | ⚠️ Limited | ⚠️ Limited | ✅ | ✅ | 💰 Paid | 💰 Plus/Pro |
+| Code Editor | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Multi-turn Conversations | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Inline Editing | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| File Access | ⚠️ Via MCP | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ Via MCP |
+| Terminal Integration | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| MCP Apps Support | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ Partial | ⚠️ Beta |
+| Collaboration | ❌ | ❌ | ❌ | ⚠️ Share | ⚠️ Share | ❌ | ✅ Real-time | ⚠️ Share | ⚠️ Share |
+| Open Source | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Setup Complexity | ⭐ Easy | ⭐ Easy | ⭐ Easy | ⭐ Easy | ⭐ Easy | ⭐⭐ Medium | ⭐ Easy | ⭐⭐ Medium | ⭐⭐⭐ Complex |
 
 ## Getting Help
 
