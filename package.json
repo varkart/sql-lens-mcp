@@ -23,6 +23,7 @@
   },
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "sql",
     "database",
     "postgresql",
@@ -33,10 +34,23 @@
     "mariadb",
     "natural-language",
     "ai",
-    "llm"
+    "llm",
+    "claude",
+    "chatgpt",
+    "database-management",
+    "query-builder",
+    "schema-introspection"
   ],
   "author": "vk",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varkart/sql-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/varkart/sql-mcp/issues"
+  },
+  "homepage": "https://github.com/varkart/sql-mcp#readme",
   "engines": {
     "node": ">=18.0.0"
   },

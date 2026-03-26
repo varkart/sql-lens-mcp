@@ -1,5 +1,13 @@
 # sql-mcp
 
+[![npm version](https://img.shields.io/npm/v/sql-mcp.svg)](https://www.npmjs.com/package/sql-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/sql-mcp.svg)](https://www.npmjs.com/package/sql-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/varkart/sql-mcp?style=social)](https://github.com/varkart/sql-mcp)
+[![CI](https://github.com/varkart/sql-mcp/workflows/CI/badge.svg)](https://github.com/varkart/sql-mcp/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
+
 Production-grade MCP (Model Context Protocol) server for managing multiple database connections, translating natural language to SQL, and executing queries across databases with rich visualizations.
 
 ## Features
