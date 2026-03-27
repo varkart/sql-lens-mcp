@@ -1,0 +1,57 @@
+{
+  "connections": {
+    "test-postgres": {
+      "name": "Test PostgreSQL",
+      "env": "test",
+      "config": {
+        "type": "postgresql",
+        "host": "localhost",
+        "port": 5432,
+        "database": "testdb",
+        "user": "testuser",
+        "password": "testpass",
+        "ssl": false
+      }
+    },
+    "test-mysql": {
+      "name": "Test MySQL",
+      "env": "test",
+      "config": {
+        "type": "mysql",
+        "host": "localhost",
+        "port": 3306,
+        "database": "testdb",
+        "user": "testuser",
+        "password": "testpass"
+      }
+    },
+    "test-mariadb": {
+      "name": "Test MariaDB",
+      "env": "test",
+      "config": {
+        "type": "mariadb",
+        "host": "localhost",
+        "port": 3307,
+        "database": "testdb",
+        "user": "testuser",
+        "password": "testpass"
+      }
+    },
+    "test-mssql": {
+      "name": "Test SQL Server",
+      "env": "test",
+      "config": {
+        "type": "mssql",
+        "server": "localhost",
+        "port": 1433,
+        "database": "master",
+        "user": "sa",
+        "password": "TestPass123!",
+        "options": {
+          "encrypt": false,
+          "trustServerCertificate": true
+        }
+      }
+    }
+  }
+}

@@ -9,6 +9,17 @@ test/**/*.js
 test/**/*.d.ts
 !test/setup.js
 
+# Test database scripts (compiled)
+create-test-db.js
+demo-test-db.js
+test-with-db.js
+
+# Docker volumes (managed by Docker Compose)
+postgres_data/
+mysql_data/
+mariadb_data/
+mssql_data/
+
 # Environment and config
 .env
 .env.*
