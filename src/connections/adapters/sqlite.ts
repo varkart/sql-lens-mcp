@@ -65,29 +65,46 @@ export class SQLiteAdapter implements DatabaseAdapter {
       }
 
       const stmt = this.db.prepare(sql);
-      const rows = stmt.all(...params) as Record<string, unknown>[];
       const executionTimeMs = Date.now() - startTime;
 
-      const columns: ColumnInfo[] = stmt.columns().map(col => ({
-        name: col.name,
-        type: col.type || 'unknown',
-        nullable: true,
-      }));
+      // Use run() for DDL/DML statements, all() for SELECT
+      if (stmt.reader) {
+        const rows = stmt.all(...params) as Record<string, unknown>[];
 
-      const maxRows = options.maxRows || 100000;
-      const slicedRows = rows.slice(0, maxRows);
-      const truncated = rows.length > maxRows;
+        const columns: ColumnInfo[] = stmt.columns().map(col => ({
+          name: col.name,
+          type: col.type || 'unknown',
+          nullable: true,
+        }));
 
-      logger.debug('SQLite query executed', { rowCount: slicedRows.length, executionTimeMs });
+        const maxRows = options.maxRows || 100000;
+        const slicedRows = rows.slice(0, maxRows);
+        const truncated = rows.length > maxRows;
 
-      return {
-        columns,
-        rows: slicedRows,
-        rowCount: slicedRows.length,
-        truncated,
-        executionTimeMs,
-        statement: sql,
-      };
+        logger.debug('SQLite query executed', { rowCount: slicedRows.length, executionTimeMs });
+
+        return {
+          columns,
+          rows: slicedRows,
+          rowCount: slicedRows.length,
+          truncated,
+          executionTimeMs,
+          statement: sql,
+        };
+      } else {
+        const result = stmt.run(...params);
+
+        logger.debug('SQLite statement executed', { changes: result.changes, executionTimeMs });
+
+        return {
+          columns: [],
+          rows: [],
+          rowCount: result.changes,
+          truncated: false,
+          executionTimeMs,
+          statement: sql,
+        };
+      }
     } catch (error) {
       const err = error as Error;
       if (err.message.includes('timeout')) {
