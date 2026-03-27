@@ -219,6 +219,105 @@ npm run build
 chmod +x dist/index.js
 ```
 
+### Issue: "EPERM: operation not permitted" (macOS)
+
+**Error**: `Error: EPERM: operation not permitted, open '/path/to/dist/index.js'`
+
+**Cause**: macOS security restrictions prevent Claude Desktop from reading files in certain directories (like Documents folder) without Full Disk Access permission.
+
+**Symptoms**:
+- Server starts successfully in terminal
+- Server fails when launched from Claude Desktop
+- Error shows `EPERM` or `operation not permitted`
+- Files may have extended attributes (`@` symbol in `ls -la` output)
+
+**Solutions**:
+
+**Option 1: Use Global Installation (Recommended)**
+
+Install the package globally to avoid permission issues:
+
+```bash
+# From your project directory
+npm run build
+npm install -g .
+
+# Or using npm link for development
+npm link
+```
+
+Then update your Claude Desktop config to use the global command:
+
+```json
+{
+  "mcpServers": {
+    "sql-mcp": {
+      "command": "sql-mcp",
+      "args": ["--stdio"]
+    }
+  }
+}
+```
+
+Find where the global installation is:
+```bash
+which sql-mcp
+# Output: /usr/local/bin/sql-mcp or /opt/homebrew/bin/sql-mcp
+```
+
+**Option 2: Grant Full Disk Access**
+
+If you need to use the local development version:
+
+1. Open **System Settings** → **Privacy & Security** → **Full Disk Access**
+2. Click the **lock icon** to make changes (authenticate)
+3. Click the **+** button
+4. Navigate to `/Applications` and select **Claude.app**
+5. Enable the toggle for Claude
+6. **Completely quit and restart Claude Desktop**
+
+**Option 3: Move Project to Unrestricted Location**
+
+Move your project to a location that doesn't require Full Disk Access:
+- `/usr/local/projects/`
+- Your home directory root (`~/sql-mcp/`)
+- Avoid: `~/Documents/`, `~/Desktop/`, `~/Downloads/`
+
+**Important: Global vs Local Development**
+
+When you have both global and local installations:
+
+- **Global**: `/usr/local/bin/sql-mcp` → `/usr/local/lib/node_modules/sql-mcp/`
+- **Local**: `~/Documents/projects/sql-mcp/`
+
+They are **separate copies**:
+- Global installation won't auto-update with local code changes
+- Claude Desktop using `sql-mcp` command runs the global version
+- Claude Desktop using full path runs the local version
+
+**To sync local changes to global installation**:
+```bash
+# After making code changes
+npm run build
+npm install -g .
+
+# Or if using npm link
+npm run build
+# Changes are automatically available
+```
+
+**Check which version is installed**:
+```bash
+# Show global installation location
+npm list -g sql-mcp
+
+# Show global package timestamp
+ls -la $(npm root -g)/sql-mcp/dist/index.js
+
+# Compare with local version
+ls -la ./dist/index.js
+```
+
 ### Issue: Server crashes immediately
 
 **Symptoms**: Connection closes right after opening
@@ -359,9 +458,19 @@ npm list --depth=0
 
 After fixing, verify the connection works:
 
-1. **Start your MCP client**
-2. **Check server appears** in the client's server list
-3. **Test a simple tool**:
+1. **Verify which version is running** (if you have both global and local):
+   ```bash
+   # Check global version location
+   which sql-mcp
+
+   # Check if it's the latest
+   ls -la $(which sql-mcp)
+   ls -la ./dist/index.js
+   ```
+
+2. **Start your MCP client**
+3. **Check server appears** in the client's server list
+4. **Test a simple tool**:
    ```
    Use the list_connections tool
    Expected: Empty list (no connections yet)
@@ -390,8 +499,9 @@ After fixing, verify the connection works:
 **Minimum Requirements**:
 - Node.js >= 18.0.0
 - Built project (`dist/` directory exists)
-- Absolute path in MCP client config
+- Absolute path in MCP client config (or global installation)
 - MCP client supports stdio transport
+- macOS: Full Disk Access for Claude.app (if using local path)
 
 **Config Template**:
 ```json
