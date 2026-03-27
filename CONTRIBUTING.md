@@ -77,7 +77,7 @@ We pledge to make participation in our project a harassment-free experience for 
 
 Create a test configuration:
 ```bash
-cp sql-mcp.config.example.json sql-mcp.config.json
+cp examples/configs/sql-mcp.config.example.json sql-mcp.config.json
 ```
 
 ### Running Locally

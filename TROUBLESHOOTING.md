@@ -37,7 +37,7 @@ node debug-server.js
 
 ## Step 2: Configure Your MCP Client
 
-### For Claude Desktop / Claude Code
+### For Claude Desktop
 
 **Location**:
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -58,6 +58,39 @@ node debug-server.js
     }
   }
 }
+```
+
+### For Claude Code CLI
+
+**Location**: `~/.claude.json`
+
+**Configuration**:
+```json
+{
+  "mcpServers": {
+    "sql-mcp": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/ABSOLUTE/PATH/TO/sql-mcp/dist/index.js"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+⚠️ **Important differences from Claude Desktop**:
+- Includes `"type": "stdio"` field
+- **No** `--stdio` flag in args array (this is critical!)
+- Path must be absolute, not `packages/server/dist/index.js` if you're using a monorepo structure
+
+**Common mistake**: Using the wrong path. The project structure is:
+```
+sql-mcp/
+  dist/
+    index.js  ← Correct path
+  NOT packages/server/dist/index.js
 ```
 
 ⚠️ **Important**:

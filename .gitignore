@@ -8,11 +8,14 @@ dist/
 test/**/*.js
 test/**/*.d.ts
 !test/setup.js
+!test/helpers/*.js
 
-# Test database scripts (compiled)
-create-test-db.js
-demo-test-db.js
-test-with-db.js
+# Compiled JS files in root (keep only TypeScript sources)
+/*.js
+!*.config.js
+
+# Cleanup directory (safe to delete after review)
+trash/
 
 # Docker volumes (managed by Docker Compose)
 postgres_data/

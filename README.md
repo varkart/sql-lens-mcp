@@ -272,7 +272,7 @@ npm run build
 
 4. **Create a test configuration** (optional)
 ```bash
-cp sql-mcp.config.example.json sql-mcp.config.json
+cp examples/configs/sql-mcp.config.example.json sql-mcp.config.json
 # Edit sql-mcp.config.json with your database credentials
 ```
 
@@ -326,17 +326,18 @@ node demo-test-db.js
 **Option 2: Docker Compose (Real Databases)**
 ```bash
 # Start all databases (PostgreSQL, MySQL, MariaDB, MSSQL)
-docker-compose up -d
+cd test/e2e
+docker compose up -d
 
 # Seed with test data
-chmod +x seed-databases.sh
-./seed-databases.sh
+./setup.sh
 
 # Stop when done
-docker-compose down
+docker compose down
+cd ../..
 ```
 
-See [TEST_DATABASE.md](TEST_DATABASE.md) for detailed manual testing instructions and connection configs.
+See [TESTING.md](TESTING.md) for detailed testing instructions and [test/e2e/README.md](test/e2e/README.md) for E2E test setup.
 
 ### Test Structure
 

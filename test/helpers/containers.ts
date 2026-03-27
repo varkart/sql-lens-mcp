@@ -1,5 +1,5 @@
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers';
-import type { ConnectionConfig } from '../../src/utils/types.js';
+import type { ConnectionConfig } from '../../dist/utils/types.js';
 
 export interface TestContainerInfo {
   container: StartedTestContainer;

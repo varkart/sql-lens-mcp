@@ -1,8 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist-test",
-    "rootDir": "."
+    "outDir": "./test-dist",
+    "rootDir": "./test",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./dist/*"]
+    }
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "start-dbs.ts"]
+  "include": ["test/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test/setup.js", "test/e2e/**/*.ts"]
 }

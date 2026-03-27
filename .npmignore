@@ -9,14 +9,12 @@ tests/
 
 # Documentation (README is included by default)
 docs/
-SCALE_PLAN.md
 CONTRIBUTING.md
+TESTING.md
 
 # Development scripts and configs
-start-dbs.*
-dist-test/
-tsconfig.test.json
-debug-server.js
+trash/
+examples/
 esbuild.config.js
 
 # Environment and secrets
