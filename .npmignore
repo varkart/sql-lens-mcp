@@ -1,6 +1,7 @@
 # Development files
 test/
 tests/
+test-dist/
 *.test.js
 *.test.ts
 .github/
@@ -11,6 +12,9 @@ tests/
 docs/
 CONTRIBUTING.md
 TESTING.md
+TEST_SETUP.md
+IMPLEMENTATION_COMPLETE.md
+REFACTORING_SUMMARY.md
 
 # Development scripts and configs
 trash/
