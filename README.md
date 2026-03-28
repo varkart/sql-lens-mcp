@@ -491,7 +491,7 @@ docker compose down
 cd ../..
 ```
 
-See [TESTING.md](TESTING.md) for detailed testing instructions and [test/e2e/README.md](test/e2e/README.md) for E2E test setup.
+See [TESTING.md](docs/TESTING.md) for detailed testing instructions and [test/e2e/README.md](test/e2e/README.md) for E2E test setup.
 
 ### Test Structure
 

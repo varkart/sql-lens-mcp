@@ -10,11 +10,6 @@ test-dist/
 
 # Documentation (README is included by default)
 docs/
-CONTRIBUTING.md
-TESTING.md
-TEST_SETUP.md
-IMPLEMENTATION_COMPLETE.md
-REFACTORING_SUMMARY.md
 
 # Development scripts and configs
 trash/
