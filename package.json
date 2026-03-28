@@ -41,7 +41,10 @@
     "query-builder",
     "schema-introspection"
   ],
-  "author": "vk",
+  "author": {
+    "name": "vk",
+    "url": "https://github.com/varkart"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -51,6 +54,10 @@
     "url": "https://github.com/varkart/sql-mcp/issues"
   },
   "homepage": "https://github.com/varkart/sql-mcp#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/varkart"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

@@ -4,7 +4,7 @@ on:
   push:
     branches: [ dev, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev, main ]
 
 jobs:
   build:
@@ -30,12 +30,10 @@ jobs:
       run: npm run build
 
     - name: Run linter
-      run: npm run lint --if-present
-      continue-on-error: true
+      run: npm run lint
 
     - name: Run tests
-      run: npm test --if-present
-      continue-on-error: true
+      run: npm test
 
   security:
     runs-on: ubuntu-latest
