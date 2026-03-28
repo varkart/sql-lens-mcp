@@ -1,6 +1,6 @@
-# Contributing to sql-mcp
+# Contributing to mcp-sql-explorer
 
-Thank you for your interest in contributing to sql-mcp! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to mcp-sql-explorer! This document provides guidelines and instructions for contributing.
 
 ## Quick Links
 
@@ -60,7 +60,7 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) that all contrib
 
 Create a test configuration:
 ```bash
-cp examples/configs/sql-mcp.config.example.json sql-mcp.config.json
+cp examples/configs/mcp-sql-explorer.config.example.json mcp-sql-explorer.config.json
 ```
 
 ### Running Locally
@@ -339,10 +339,10 @@ We welcome:
 npm start -- --debug
 
 # Debug specific modules
-DEBUG=sql-mcp:* npm start
+DEBUG=mcp-sql-explorer:* npm start
 
 # Debug in VS Code
-# Use the "Debug sql-mcp" launch configuration
+# Use the "Debug mcp-sql-explorer" launch configuration
 ```
 
 ### Adding a New Database Adapter
@@ -396,4 +396,4 @@ If you have any questions about contributing, feel free to:
 - Ask in an existing issue
 - Reach out to maintainers
 
-Thank you for contributing to sql-mcp! 🚀
+Thank you for contributing to mcp-sql-explorer! 🚀

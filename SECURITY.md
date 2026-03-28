@@ -11,7 +11,7 @@ We actively support the following versions with security updates:
 
 ## Reporting a Vulnerability
 
-We take the security of sql-mcp seriously. If you discover a security vulnerability, please follow these steps:
+We take the security of mcp-sql-explorer seriously. If you discover a security vulnerability, please follow these steps:
 
 ### How to Report
 
@@ -57,7 +57,7 @@ We follow a **coordinated disclosure** approach:
 
 ### Security Best Practices
 
-When using sql-mcp in production:
+When using mcp-sql-explorer in production:
 
 #### 1. Use Read-Only Connections
 ```json
@@ -75,8 +75,8 @@ When using sql-mcp in production:
 #### 2. Protect Configuration Files
 ```bash
 # Ensure config file has restricted permissions
-chmod 600 ~/.sql-mcp/config.json
-chmod 600 ~/.sql-mcp/connections.json
+chmod 600 ~/.mcp-sql-explorer/config.json
+chmod 600 ~/.mcp-sql-explorer/connections.json
 ```
 
 #### 3. Use Environment Variables for Credentials
@@ -100,8 +100,8 @@ chmod 600 ~/.sql-mcp/connections.json
 
 #### 5. Regular Updates
 ```bash
-# Keep sql-mcp up to date
-npm update -g sql-mcp
+# Keep mcp-sql-explorer up to date
+npm update -g mcp-sql-explorer
 
 # Check for security advisories
 npm audit
@@ -120,20 +120,20 @@ npm audit
 ### Known Security Considerations
 
 #### Credential Storage
-Connection credentials are stored in `~/.sql-mcp/connections.json` with mode 0600 (user read/write only). This is similar to how `~/.pgpass` and other database tools store credentials. Users should be aware that credentials are stored in plaintext on disk.
+Connection credentials are stored in `~/.mcp-sql-explorer/connections.json` with mode 0600 (user read/write only). This is similar to how `~/.pgpass` and other database tools store credentials. Users should be aware that credentials are stored in plaintext on disk.
 
 **Mitigation**: Use environment variables or external credential management systems for sensitive production environments.
 
 #### SQL Injection
-sql-mcp implements multiple layers of protection against SQL injection:
+mcp-sql-explorer implements multiple layers of protection against SQL injection:
 - Parameterized queries for user inputs
 - Query validation and dangerous pattern detection
 - Multi-statement query blocking
 
-**Best Practice**: Always use parameterized queries when integrating sql-mcp into applications.
+**Best Practice**: Always use parameterized queries when integrating mcp-sql-explorer into applications.
 
 #### Resource Exhaustion
-sql-mcp implements protection mechanisms:
+mcp-sql-explorer implements protection mechanisms:
 - Query timeouts (default: 30s, max: 5 minutes)
 - Row limits (default: 1000, max: 100,000)
 - Connection pooling limits
@@ -177,7 +177,7 @@ We currently do not have a formal bug bounty program. However, we deeply appreci
 
 ### Security Hall of Fame
 
-We recognize security researchers who have helped improve sql-mcp:
+We recognize security researchers who have helped improve mcp-sql-explorer:
 
 - *Be the first to contribute!*
 

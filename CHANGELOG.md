@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - SQL injection prevention with parameterized queries
-- Credential storage in ~/.sql-mcp with restricted permissions (0600)
+- Credential storage in ~/.mcp-sql-explorer with restricted permissions (0600)
 - Environment variable support for sensitive configuration
 - Security policy (SECURITY.md) with vulnerability reporting process
 

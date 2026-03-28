@@ -1,7 +1,7 @@
-# sql-mcp
+# mcp-sql-explorer
 
-[![npm version](https://img.shields.io/npm/v/sql-mcp.svg)](https://www.npmjs.com/package/sql-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/sql-mcp.svg)](https://www.npmjs.com/package/sql-mcp)
+[![npm version](https://img.shields.io/npm/v/mcp-sql-explorer.svg)](https://www.npmjs.com/package/mcp-sql-explorer)
+[![npm downloads](https://img.shields.io/npm/dm/mcp-sql-explorer.svg)](https://www.npmjs.com/package/mcp-sql-explorer)
 [![GitHub stars](https://img.shields.io/github/stars/varkart/sql-mcp?style=social)](https://github.com/varkart/sql-mcp)
 [![Status](https://img.shields.io/badge/status-production--ready-brightgreen)]()
 [![CI](https://github.com/varkart/sql-mcp/workflows/CI/badge.svg)](https://github.com/varkart/sql-mcp/actions)
@@ -34,12 +34,12 @@ Get up and running in under 2 minutes.
 **Using NPX** (recommended - auto-updates):
 ```bash
 # No installation needed! Use directly:
-npx -y sql-mcp --stdio
+npx -y mcp-sql-explorer --stdio
 ```
 
 **Or install globally:**
 ```bash
-npm install -g sql-mcp
+npm install -g mcp-sql-explorer
 ```
 
 ### Step 2: Configure Your AI Client
@@ -49,9 +49,9 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 ```json
 {
   "mcpServers": {
-    "sql-mcp": {
+    "mcp-sql-explorer": {
       "command": "npx",
-      "args": ["-y", "sql-mcp", "--stdio"]
+      "args": ["-y", "mcp-sql-explorer", "--stdio"]
     }
   }
 }
@@ -64,9 +64,9 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 ```json
 {
   "claude.mcpServers": {
-    "sql-mcp": {
+    "mcp-sql-explorer": {
       "command": "npx",
-      "args": ["-y", "sql-mcp", "--stdio"]
+      "args": ["-y", "mcp-sql-explorer", "--stdio"]
     }
   }
 }
@@ -76,9 +76,9 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 ```json
 {
   "mcpServers": {
-    "sql-mcp": {
+    "mcp-sql-explorer": {
       "command": "npx",
-      "args": ["-y", "sql-mcp", "--stdio"]
+      "args": ["-y", "mcp-sql-explorer", "--stdio"]
     }
   }
 }
@@ -117,7 +117,7 @@ See [all client configs →](docs/clients/)
 "Which products are running low on inventory?"
 "Find all orders placed in the last 7 days"
 ```
-No SQL required—just ask naturally and sql-mcp handles the rest.
+No SQL required—just ask naturally and mcp-sql-explorer handles the rest.
 
 ### 🔌 Connect to Any Database
 - **PostgreSQL** - Production-grade with full feature support
@@ -151,9 +151,9 @@ Connections automatically saved and restored between sessions. No need to re-ent
 
 ---
 
-## Why sql-mcp?
+## Why mcp-sql-explorer?
 
-| Feature | sql-mcp | Direct SQL | Database GUI | AI with Memory |
+| Feature | mcp-sql-explorer | Direct SQL | Database GUI | AI with Memory |
 |---------|---------|------------|--------------|----------------|
 | **Natural Language** | ✅ Built-in | ❌ No | ❌ No | ⚠️ Limited |
 | **Multi-Database** | ✅ 6+ types | ⚠️ One at a time | ⚠️ One at a time | ❌ No |
@@ -256,15 +256,15 @@ AI: Missing tables in staging:
 **Method 1: NPX** (zero installation, auto-updates):
 ```bash
 # Use directly without installing
-npx -y sql-mcp --stdio
+npx -y mcp-sql-explorer --stdio
 ```
 
 **Method 2: Global Installation**:
 ```bash
-npm install -g sql-mcp
+npm install -g mcp-sql-explorer
 
 # Verify installation
-sql-mcp --version
+mcp-sql-explorer --version
 ```
 
 ### For Developers
@@ -285,14 +285,14 @@ Then configure your MCP client with the absolute path to `dist/index.js`.
 **From Source**:
 ```bash
 npm pack
-npm install -g ./sql-mcp-1.0.0.tgz
+npm install -g ./mcp-sql-explorer-1.0.0.tgz
 ```
 
 ---
 
 ## Supported Clients
 
-sql-mcp works with any MCP-compatible client. We provide detailed setup guides:
+mcp-sql-explorer works with any MCP-compatible client. We provide detailed setup guides:
 
 | Client | Platform | Best For | Setup Difficulty |
 |--------|----------|----------|------------------|
@@ -316,9 +316,9 @@ sql-mcp works with any MCP-compatible client. We provide detailed setup guides:
 
 The server looks for configuration in this order:
 1. `--config <path>` CLI argument
-2. `./sql-mcp.config.json` (current directory)
-3. `~/.sql-mcp/config.json`
-4. `~/.sql-mcp.config.json`
+2. `./mcp-sql-explorer.config.json` (current directory)
+3. `~/.mcp-sql-explorer/config.json`
+4. `~/.mcp-sql-explorer.config.json`
 
 **Note**: Database configuration is optional. You can connect to databases dynamically using the `connect_database` tool without a config file.
 
@@ -387,7 +387,7 @@ Options:
 
 ## Connection Persistence
 
-Connections are persisted to `~/.sql-mcp/connections.json` (mode 0600) for automatic restoration on restart. Passwords are stored in plaintext (similar to `~/.pgpass`).
+Connections are persisted to `~/.mcp-sql-explorer/connections.json` (mode 0600) for automatic restoration on restart. Passwords are stored in plaintext (similar to `~/.pgpass`).
 
 ## Security
 
@@ -426,8 +426,8 @@ npm run build
 
 4. **Create a test configuration** (optional)
 ```bash
-cp examples/configs/sql-mcp.config.example.json sql-mcp.config.json
-# Edit sql-mcp.config.json with your database credentials
+cp examples/configs/mcp-sql-explorer.config.example.json mcp-sql-explorer.config.json
+# Edit mcp-sql-explorer.config.json with your database credentials
 ```
 
 ### Development Workflow
@@ -437,7 +437,7 @@ cp examples/configs/sql-mcp.config.example.json sql-mcp.config.json
 npm run dev
 
 # In another terminal, run the server
-npm start -- --config sql-mcp.config.json --debug
+npm start -- --config mcp-sql-explorer.config.json --debug
 
 # Format code
 npm run format
@@ -868,7 +868,7 @@ Quick links:
 - [Request a feature](https://github.com/varkart/sql-mcp/issues/new?template=feature_request.md)
 - [Ask a question](https://github.com/varkart/sql-mcp/discussions)
 
-Thank you for contributing to sql-mcp!
+Thank you for contributing to mcp-sql-explorer!
 
 ## License
 
