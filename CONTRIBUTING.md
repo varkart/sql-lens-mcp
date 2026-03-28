@@ -4,7 +4,7 @@ Thank you for your interest in contributing to sql-mcp! This document provides g
 
 ## Quick Links
 
-- [Code of Conduct](#code-of-conduct)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Getting Started](#getting-started)
 - [Development Setup](#development-setup)
 - [Making Changes](#making-changes)
@@ -13,24 +13,7 @@ Thank you for your interest in contributing to sql-mcp! This document provides g
 
 ## Code of Conduct
 
-### Our Pledge
-
-We pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
-
-### Our Standards
-
-**Examples of behavior that contributes to a positive environment**:
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
-
-**Examples of unacceptable behavior**:
-- Trolling, insulting/derogatory comments, and personal attacks
-- Public or private harassment
-- Publishing others' private information without permission
-- Other conduct which could reasonably be considered inappropriate
+This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) that all contributors are expected to follow. Please read it before contributing.
 
 ## Getting Started
 
