@@ -1,11 +1,11 @@
 {
-  "name": "sql-mcp",
+  "name": "mcp-sql-explorer",
   "version": "1.0.0",
   "description": "Production-grade MCP server for multi-database SQL management with natural language querying",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "sql-mcp": "dist/index.js"
+    "mcp-sql-explorer": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
