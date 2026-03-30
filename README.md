@@ -9,9 +9,9 @@
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
 
-**Query databases in plain English—no SQL required.**
+**The AI-native database client. Query any database in plain English using Model Context Protocol.**
 
-Chat with your database in plain English—no SQL knowledge needed. Ask questions naturally, get instant answers. Works with PostgreSQL, MySQL, SQLite, and more.
+Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io), mcp-sql-explorer brings natural language database interactions to AI assistants. No SQL knowledge needed—just ask questions naturally and get instant answers. Works with PostgreSQL, MySQL, SQLite, and more.
 
 ```
 You: "Show me users who signed up this week"

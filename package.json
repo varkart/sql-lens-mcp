@@ -1,7 +1,7 @@
 {
   "name": "mcp-sql-explorer",
   "version": "1.0.0",
-  "description": "Production-grade MCP server for multi-database SQL management with natural language querying",
+  "description": "AI-native SQL client built on Model Context Protocol - Query databases using natural language through any LLM",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
