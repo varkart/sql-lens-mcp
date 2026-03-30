@@ -38,7 +38,8 @@ describe('Explore Database Prompt', () => {
         });
         const adapter = context.manager.getAdapter('test-db');
         await adapter.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)', []);
-        const schema = await context.manager.getSchema('test-db');
+        // Force refresh to bypass cache since table was created after connection
+        const schema = await context.manager.getSchema('test-db', true);
         expect(schema.tables).to.have.length(1);
         expect(schema.databaseType).to.equal('sqlite');
     });

@@ -1,4 +1,4 @@
-import * as mssql from 'mssql';
+import mssql from 'mssql';
 import type { DatabaseAdapter } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';

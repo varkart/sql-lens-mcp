@@ -24,15 +24,17 @@ export class TestContainers {
         return info;
     }
     async startMySQL() {
-        const container = await new GenericContainer('mysql:8.4')
+        const container = await new GenericContainer('mysql:8.0')
             .withEnvironment({
             MYSQL_ROOT_PASSWORD: 'rootpass',
             MYSQL_DATABASE: 'testdb',
             MYSQL_USER: 'testuser',
             MYSQL_PASSWORD: 'testpass',
         })
+            .withCommand(['--default-authentication-plugin=mysql_native_password'])
             .withExposedPorts(3306)
-            .withWaitStrategy(Wait.forLogMessage(/ready for connections/))
+            .withWaitStrategy(Wait.forLogMessage(/ready for connections.*port: 3306/i))
+            .withStartupTimeout(120000)
             .start();
         const config = {
             type: 'mysql',

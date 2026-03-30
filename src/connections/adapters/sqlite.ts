@@ -11,15 +11,16 @@ export class SQLiteAdapter implements DatabaseAdapter {
 
   async connect(config: ConnectionConfig): Promise<void> {
     try {
-      logger.debug('Connecting to SQLite', { path: config.path });
+      const path = config.path || config.database;
+      logger.debug('Connecting to SQLite', { path });
 
-      if (!config.path) {
+      if (!path) {
         throw new ConnectionError('SQLite path is required');
       }
 
       this.readOnlyMode = config.readOnly ?? false;
 
-      this.db = new Database(config.path, {
+      this.db = new Database(path, {
         readonly: this.readOnlyMode,
         fileMustExist: false,
       });
@@ -32,7 +33,7 @@ export class SQLiteAdapter implements DatabaseAdapter {
         this.db.pragma('query_only = ON');
       }
 
-      logger.info('SQLite connection established', { path: config.path });
+      logger.info('SQLite connection established', { path });
     } catch (error) {
       const err = error as Error;
       logger.error('SQLite connection failed', { error: err.message });

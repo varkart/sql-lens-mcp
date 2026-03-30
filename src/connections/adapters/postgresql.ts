@@ -92,12 +92,16 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
       const rows = result.rows.slice(0, maxRows);
       const truncated = result.rows.length > maxRows;
 
-      logger.debug('PostgreSQL query executed', { rowCount: rows.length, executionTimeMs });
+      // For INSERT/UPDATE/DELETE, use result.rowCount (affected rows)
+      // For SELECT, use rows.length (returned rows)
+      const actualRowCount = result.rowCount ?? rows.length;
+
+      logger.debug('PostgreSQL query executed', { rowCount: actualRowCount, executionTimeMs });
 
       return {
         columns,
         rows,
-        rowCount: rows.length,
+        rowCount: actualRowCount,
         truncated,
         executionTimeMs,
         statement: sql,

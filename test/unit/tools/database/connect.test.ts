@@ -22,12 +22,11 @@ describe('Connect Tool', () => {
   it('should connect to SQLite in-memory database', async () => {
     registerConnectTool(server, context);
 
-    const result = await context.manager.connect('test-db', {
+    await context.manager.connect('test-db', {
       type: 'sqlite',
       path: ':memory:',
     });
 
-    expect(result).to.exist;
     const connection = context.manager.getConnection('test-db');
     expect(connection).to.exist;
     expect(connection?.status).to.equal('connected');

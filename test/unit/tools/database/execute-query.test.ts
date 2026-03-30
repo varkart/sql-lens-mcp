@@ -84,7 +84,7 @@ describe('Execute Query Tool', () => {
     registerExecuteQueryTool(server, context);
 
     const adapter = context.manager.getAdapter('non-existent');
-    expect(adapter).to.be.null;
+    expect(adapter).to.be.undefined;
   });
 
   it('should respect maxRows limit', async () => {

@@ -33,7 +33,8 @@ describe('Describe Schema Tool', () => {
         });
         const adapter = context.manager.getAdapter('test-db');
         await adapter.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)', []);
-        const schema = await context.manager.getSchema('test-db');
+        // Force refresh to bypass cache since table was created after connection
+        const schema = await context.manager.getSchema('test-db', true);
         expect(schema.tables).to.have.length(1);
         expect(schema.tables[0].name).to.equal('users');
         expect(schema.tables[0].columns).to.have.length(2);
@@ -48,7 +49,8 @@ describe('Describe Schema Tool', () => {
         const adapter = context.manager.getAdapter('test-db');
         await adapter.execute('CREATE TABLE users (id INTEGER)', []);
         await adapter.execute('CREATE TABLE posts (id INTEGER)', []);
-        const schema = await context.manager.getSchema('test-db');
+        // Force refresh to bypass cache since tables were created after connection
+        const schema = await context.manager.getSchema('test-db', true);
         const usersTable = schema.tables.find(t => t.name === 'users');
         expect(usersTable).to.exist;
         expect(usersTable?.name).to.equal('users');

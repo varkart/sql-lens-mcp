@@ -80,11 +80,11 @@ export class MySQLAdapter implements DatabaseAdapter {
       const [rows, fields] = await connection.query(sql, params);
       const executionTimeMs = Date.now() - startTime;
 
-      const columns: ColumnInfo[] = (fields as mysql.FieldPacket[]).map(field => ({
+      const columns: ColumnInfo[] = fields ? (fields as mysql.FieldPacket[]).map(field => ({
         name: field.name,
         type: this.mapMySQLType(field.type ?? 0),
         nullable: (Number(field.flags ?? 0) & 1) === 0,
-      }));
+      })) : [];
 
       const maxRows = options.maxRows || 100000;
       const resultRows = Array.isArray(rows) ? rows : [];
@@ -118,7 +118,7 @@ export class MySQLAdapter implements DatabaseAdapter {
     }
 
     const tablesQuery = `
-      SELECT table_name
+      SELECT TABLE_NAME as table_name
       FROM information_schema.tables
       WHERE table_schema = ?
         AND table_type = 'BASE TABLE'
@@ -133,12 +133,12 @@ export class MySQLAdapter implements DatabaseAdapter {
 
       const columnsQuery = `
         SELECT
-          column_name,
-          data_type,
-          is_nullable,
-          column_default,
-          character_maximum_length,
-          column_key
+          COLUMN_NAME as column_name,
+          DATA_TYPE as data_type,
+          IS_NULLABLE as is_nullable,
+          COLUMN_DEFAULT as column_default,
+          CHARACTER_MAXIMUM_LENGTH as character_maximum_length,
+          COLUMN_KEY as column_key
         FROM information_schema.columns
         WHERE table_schema = ? AND table_name = ?
         ORDER BY ordinal_position
@@ -157,9 +157,9 @@ export class MySQLAdapter implements DatabaseAdapter {
 
       const fkQuery = `
         SELECT
-          column_name,
-          referenced_table_name,
-          referenced_column_name
+          COLUMN_NAME as column_name,
+          REFERENCED_TABLE_NAME as referenced_table_name,
+          REFERENCED_COLUMN_NAME as referenced_column_name
         FROM information_schema.key_column_usage
         WHERE table_schema = ?
           AND table_name = ?

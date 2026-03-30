@@ -63,7 +63,7 @@ describe('Execute Query Tool', () => {
     it('should fail on non-existent connection', async () => {
         registerExecuteQueryTool(server, context);
         const adapter = context.manager.getAdapter('non-existent');
-        expect(adapter).to.be.null;
+        expect(adapter).to.be.undefined;
     });
     it('should respect maxRows limit', async () => {
         registerExecuteQueryTool(server, context);

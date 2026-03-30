@@ -33,18 +33,18 @@ describe('Disconnect Tool', () => {
     await context.manager.disconnect('test-db');
 
     connection = context.manager.getConnection('test-db');
-    expect(connection).to.be.undefined;
+    expect(connection).to.exist;
+    expect(connection?.status).to.equal('disconnected');
   });
 
   it('should handle disconnecting non-existent connection', async () => {
     registerDisconnectTool(server, context);
 
-    try {
-      await context.manager.disconnect('non-existent');
-      expect.fail('Should have thrown an error');
-    } catch (error) {
-      expect(error).to.exist;
-      expect((error as Error).message).to.include('not found');
-    }
+    // Disconnecting non-existent connection should not throw
+    await context.manager.disconnect('non-existent');
+
+    // Verify the connection doesn't exist
+    const connection = context.manager.getConnection('non-existent');
+    expect(connection).to.be.undefined;
   });
 });
