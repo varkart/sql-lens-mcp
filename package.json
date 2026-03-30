@@ -17,7 +17,7 @@
     "test:integration": "npm run build && tsc -p tsconfig.test.json && mocha --require test/setup.js 'test-dist/integration/**/*.test.js' --timeout 60000",
     "test:unit": "npm run build && tsc -p tsconfig.test.json && mocha --require test/setup.js 'test-dist/unit/**/*.test.js'",
     "test:watch": "npm test -- --watch",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint src --ext .ts --fix",
     "format": "prettier --write 'src/**/*.ts'",
     "clean": "rm -rf dist"
   },
@@ -88,7 +88,8 @@
     "testcontainers": "^10.16.0",
     "ts-node": "^10.9.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.57.2"
   },
   "optionalDependencies": {
     "oracledb": "^6.7.0"

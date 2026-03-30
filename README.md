@@ -9,21 +9,95 @@
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
 
-**Talk to your databases in plain English.**
+**Query databases in plain English—no SQL required.**
 
-Connect Claude, ChatGPT, or any AI assistant directly to PostgreSQL, MySQL, SQLite, and more. Query your data using natural language, explore schemas interactively, and execute SQL safely—all through your favorite AI chat interface.
+Chat with your database in plain English—no SQL knowledge needed. Ask questions naturally, get instant answers. Works with PostgreSQL, MySQL, SQLite, and more.
 
 ```
-You: "Connect to my PostgreSQL database at localhost"
-AI: ✅ Connected to PostgreSQL
-
 You: "Show me users who signed up this week"
 AI: Found 47 users...
     [displays formatted results]
 
-You: "What tables are in this database?"
-AI: Your database has 12 tables: users, orders, products...
+You: "Which products are running low on inventory?"
+AI: [Shows top 10 with stock levels and reorder recommendations]
+
+You: "Connect to my production database in read-only mode"
+AI: ✅ Connected to PostgreSQL (read-only mode enabled)
 ```
+
+---
+
+## 📚 Table of Contents
+
+- [🎯 Perfect For](#-perfect-for)
+- [What You Can Do](#what-you-can-do)
+- [Quick Start](#quick-start)
+- [Examples](#examples)
+- [Installation](#installation)
+- [Why mcp-sql-explorer?](#why-mcp-sql-explorer)
+- [💼 Real-World Use Cases](#-real-world-use-cases)
+- [Supported Clients](#supported-clients)
+- [Configuration](#configuration)
+- [MCP Tools](#mcp-tools)
+- [Security](#security)
+- [Database Support](#database-support)
+- [Local Development](#local-development-setup)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## 🎯 Perfect For
+
+- **📊 Data Analysts** - Query data without waiting for SQL experts
+- **💻 Developers** - Debug production databases conversationally
+- **🔧 DevOps/SREs** - Investigate incidents with natural language
+- **📱 Product Teams** - Self-service data access for decision-making
+- **🎓 Students** - Learn databases interactively without SQL intimidation
+
+---
+
+## What You Can Do
+
+### 💬 Talk to Databases in Plain English
+```
+"Show me the top 10 customers by revenue this quarter"
+"Which products are running low on inventory?"
+"Find all orders placed in the last 7 days"
+```
+No SQL required—just ask naturally and mcp-sql-explorer handles the rest.
+
+### 🔌 Connect to Any Database
+- **PostgreSQL** - Production-grade with full feature support
+- **MySQL / MariaDB** - Popular open-source databases
+- **SQLite** - Perfect for local development and testing
+- **MSSQL** - Microsoft SQL Server integration
+- **Oracle** - Enterprise database support
+
+Manage multiple connections simultaneously, switch between databases seamlessly.
+
+### 🔍 Explore Schemas Interactively
+```
+"What tables exist in this database?"
+"Describe the structure of the orders table"
+"Show me the relationships between users and orders"
+```
+Automatically discovers schemas, indexes, foreign keys, and constraints.
+
+### 🛡️ Query Safely with Built-in Security
+- **Read-only mode** for production databases
+- **Query validation** blocks dangerous operations
+- **Timeout protection** prevents runaway queries
+- **Row limits** prevent memory exhaustion
+- **SQL injection prevention** with parameterized queries
+
+### 📊 Visualize Results
+Results displayed as formatted ASCII tables and charts directly in your AI chat interface.
+
+### 💾 Persistent Connections
+Connections automatically saved and restored between sessions. No need to re-enter credentials every time.
+
+---
 
 ## Quick Start
 
@@ -106,62 +180,6 @@ See [all client configs →](docs/clients/)
    ```
 
 **Having issues?** See [Troubleshooting Guide](TROUBLESHOOTING.md)
-
----
-
-## What You Can Do
-
-### 💬 Talk to Databases in Plain English
-```
-"Show me the top 10 customers by revenue this quarter"
-"Which products are running low on inventory?"
-"Find all orders placed in the last 7 days"
-```
-No SQL required—just ask naturally and mcp-sql-explorer handles the rest.
-
-### 🔌 Connect to Any Database
-- **PostgreSQL** - Production-grade with full feature support
-- **MySQL / MariaDB** - Popular open-source databases
-- **SQLite** - Perfect for local development and testing
-- **MSSQL** - Microsoft SQL Server integration
-- **Oracle** - Enterprise database support
-
-Manage multiple connections simultaneously, switch between databases seamlessly.
-
-### 🔍 Explore Schemas Interactively
-```
-"What tables exist in this database?"
-"Describe the structure of the orders table"
-"Show me the relationships between users and orders"
-```
-Automatically discovers schemas, indexes, foreign keys, and constraints.
-
-### 🛡️ Query Safely with Built-in Security
-- **Read-only mode** for production databases
-- **Query validation** blocks dangerous operations
-- **Timeout protection** prevents runaway queries
-- **Row limits** prevent memory exhaustion
-- **SQL injection prevention** with parameterized queries
-
-### 📊 Visualize Results
-Results displayed as formatted ASCII tables and charts directly in your AI chat interface.
-
-### 💾 Persistent Connections
-Connections automatically saved and restored between sessions. No need to re-enter credentials every time.
-
----
-
-## Why mcp-sql-explorer?
-
-| Feature | mcp-sql-explorer | Direct SQL | Database GUI | AI with Memory |
-|---------|---------|------------|--------------|----------------|
-| **Natural Language** | ✅ Built-in | ❌ No | ❌ No | ⚠️ Limited |
-| **Multi-Database** | ✅ 6+ types | ⚠️ One at a time | ⚠️ One at a time | ❌ No |
-| **AI Integration** | ✅ Native MCP | ❌ No | ❌ No | ⚠️ Copy-paste |
-| **Safety Features** | ✅ Comprehensive | ❌ No | ⚠️ Basic | ❌ No |
-| **Schema Context** | ✅ Automatic | ❌ Manual | ✅ Yes | ⚠️ Limited |
-| **Version Control** | ✅ Config files | ✅ .sql files | ❌ No | ❌ No |
-| **Learning Curve** | ⭐ Easy | ⭐⭐⭐ SQL expertise | ⭐⭐ Medium | ⭐⭐ Varies |
 
 ---
 
@@ -250,6 +268,350 @@ AI: Missing tables in staging:
 ---
 
 ## Installation
+
+## Why mcp-sql-explorer?
+
+| Feature | mcp-sql-explorer | Direct SQL | Database GUI | AI with Memory |
+|---------|---------|------------|--------------|----------------|
+| **Natural Language** | ✅ Built-in | ❌ No | ❌ No | ⚠️ Limited |
+| **Multi-Database** | ✅ 6+ types | ⚠️ One at a time | ⚠️ One at a time | ❌ No |
+| **AI Integration** | ✅ Native MCP | ❌ No | ❌ No | ⚠️ Copy-paste |
+| **Safety Features** | ✅ Comprehensive | ❌ No | ⚠️ Basic | ❌ No |
+| **Schema Context** | ✅ Automatic | ❌ Manual | ✅ Yes | ⚠️ Limited |
+| **Version Control** | ✅ Config files | ✅ .sql files | ❌ No | ❌ No |
+| **Learning Curve** | ⭐ Easy | ⭐⭐⭐ SQL expertise | ⭐⭐ Medium | ⭐⭐ Varies |
+
+---
+
+
+## 💼 Real-World Use Cases
+
+### 📊 Use Case 1: Sales Performance Analysis
+
+**Who:** Sarah, Business Analyst at an e-commerce company
+**Challenge:** Needs to analyze Q4 sales trends for executive presentation, but doesn't know SQL
+**Traditional Approach:** Submit request to data team → wait 2-3 days → get CSV → realize need different data → repeat
+
+**With mcp-sql-explorer:**
+
+```
+Sarah: "Connect to the production database in read-only mode"
+AI: ✅ Connected to PostgreSQL (read-only mode enabled for safety)
+
+Sarah: "Show me top 10 products by revenue in Q4 2024"
+AI: Analyzing sales data...
+
+    Product Name          | Revenue    | Units Sold
+    --------------------- | ---------- | ----------
+    Premium Widget Pro    | $247,500   | 450
+    Smart Gadget Elite    | $189,200   | 820
+    ...
+
+Sarah: "Which region had the highest growth compared to Q3?"
+AI: West region showed strongest growth:
+    Q3 2024: $2.1M → Q4 2024: $3.1M (47% increase)
+
+    Key driver: Electronics category (+89%)
+    Top product: Premium Widget Pro
+
+Sarah: "Show me hourly sales pattern for Premium Widget Pro"
+AI: [ASCII chart showing 24-hour sales distribution]
+
+    Peak hours: 8-9 PM EST (32% of daily volume)
+    Lowest: 3-4 AM EST (2% of daily volume)
+
+    Recommendation: Focus ad spend on 6-10 PM window
+```
+
+**Result:** Complete analysis in 15 minutes vs. 3 days. Sarah delivers insights in real-time during meeting.
+
+---
+
+### 💻 Use Case 2: Production Bug Investigation
+
+**Who:** Alex, Senior Developer
+**Challenge:** API endpoint timing out in production, need to find the root cause quickly
+**Traditional Approach:** SSH to production → run raw SQL → risk of typos → manual analysis → coordinate with DBA
+
+**With mcp-sql-explorer:**
+
+```
+Alex: "Connect to prod-api database"
+AI: ✅ Connected to MySQL (read-only mode)
+
+Alex: "Show me the slowest API requests in the last hour"
+AI: SELECT endpoint, AVG(response_time_ms) as avg_time,
+         COUNT(*) as count
+    FROM api_logs
+    WHERE timestamp > NOW() - INTERVAL 1 HOUR
+    GROUP BY endpoint
+    ORDER BY avg_time DESC
+    LIMIT 10;
+
+    Endpoint                    | Avg Time | Count
+    --------------------------- | -------- | -----
+    /api/users/dashboard        | 4,500ms  | 342
+    /api/products/search        | 2,100ms  | 1,891
+    ...
+
+Alex: "What queries are running against the users table from the dashboard endpoint?"
+AI: Found 3 queries. The slow one is:
+
+    SELECT u.*, p.*, o.*, ...
+    FROM users u
+    LEFT JOIN profiles p ON ...
+    LEFT JOIN orders o ON ...
+    WHERE u.id = ?
+
+    ⚠️  Issues detected:
+    - SELECT * fetching 47 columns (only 8 used)
+    - N+1 query pattern (runs for each user)
+    - Missing index on orders.user_id
+
+Alex: "Show me index usage on orders table"
+AI: Current indexes:
+    - PRIMARY KEY (id)
+    - INDEX created_at
+
+    ❌ Missing: user_id index
+    ✅ Recommendation: CREATE INDEX idx_user_id ON orders(user_id);
+
+Alex: "How many users are affected by this slow query?"
+AI: 342 unique users in the last hour.
+    Average response time: 4.5 seconds
+    Expected with index: ~200ms (estimated 95% improvement)
+```
+
+**Result:** Root cause identified in 10 minutes. Fix deployed, confirmed 96% improvement. No production risk from manual queries.
+
+---
+
+### 🔧 Use Case 3: Incident Investigation
+
+**Who:** Jordan, Site Reliability Engineer
+**Challenge:** Overnight spike in error rates, need to investigate cause during incident call
+**Traditional Approach:** Write SQL from memory under pressure → potential mistakes → coordinate with on-call DBA → manual correlation
+
+**With mcp-sql-explorer:**
+
+```
+Jordan: "Connect to prod-monitoring database"
+AI: ✅ Connected to PostgreSQL
+
+Jordan: "Show me error rates by service in the last 6 hours"
+AI: [Table showing error counts]
+
+    api-gateway: 45,231 errors (↑ 2,300%)
+    auth-service: 12 errors (normal)
+    data-service: 89 errors (normal)
+
+Jordan: "What types of errors is api-gateway throwing?"
+AI: Error breakdown:
+    - 504 Gateway Timeout: 44,891 (99.2%)
+    - 500 Internal Server Error: 340 (0.8%)
+
+    Pattern: Started at 02:14 AM UTC
+
+Jordan: "Show me what changed in the api-gateway config around 2 AM"
+AI: Found deployment at 02:12 AM UTC:
+    Version: v2.4.1 → v2.4.2
+    Change: Updated connection pool settings
+
+    New config:
+    - max_connections: 100 → 50 (⚠️ reduced)
+    - timeout: 30s → 10s (⚠️ reduced)
+
+Jordan: "How many concurrent connections were we hitting at 2 AM?"
+AI: Average concurrent connections at 02:14-02:20 AM: 87
+    Peak: 94 connections
+
+    ⚠️  Current limit: 50 connections
+
+    Diagnosis: Connection pool exhausted after deploy
+
+Jordan: "Show me when this was working previously"
+AI: Last 7 days connection usage:
+    - Average: 72 connections
+    - Peak: 118 connections (3 AM traffic spike)
+
+    ✅ Previous limit (100) was adequate
+    ❌ New limit (50) insufficient
+```
+
+**Result:** Incident cause found in 8 minutes. Rollback initiated. Postmortem data already collected.
+
+---
+
+### 🗄️ Use Case 4: Legacy Database Migration
+
+**Who:** Maria, Software Engineer
+**Challenge:** Tasked with migrating 15-year-old legacy system, no documentation exists
+**Traditional Approach:** Manual exploration → draw ER diagrams → guess relationships → hope nothing breaks
+
+**With mcp-sql-explorer:**
+
+```
+Maria: "Connect to legacy-crm database"
+AI: ✅ Connected to MSSQL
+
+Maria: "What tables exist in this database?"
+AI: Found 47 tables. Most active:
+    - customers (124,891 rows)
+    - orders (1.2M rows)
+    - products (8,432 rows)
+    - invoices (890,234 rows)
+    ...
+
+Maria: "Explain the customers table structure"
+AI: Table: customers
+
+    Columns:
+    - id (int, PRIMARY KEY)
+    - legacy_id (varchar) ⚠️ Still in use
+    - name (varchar)
+    - created_date (datetime)
+    - status (int) ⚠️ No foreign key
+    ...
+
+    Relationships:
+    → orders.customer_id
+    → invoices.cust_id (⚠️ inconsistent naming)
+
+Maria: "What are the possible values for status?"
+AI: SELECT DISTINCT status, COUNT(*)
+    FROM customers
+    GROUP BY status;
+
+    Status | Count    | Notes
+    ------ | -------- | -----
+    0      | 45,231   | Likely 'inactive'
+    1      | 78,890   | Likely 'active'
+    2      | 770      | Unknown
+
+    ⚠️  No enum or lookup table found
+
+Maria: "Show me customers with status = 2"
+AI: Found 770 customers:
+    - All have created_date before 2015
+    - All have orders.status = 'refunded'
+
+    Inference: status = 2 means 'refunded accounts'
+
+Maria: "Are there any foreign keys not properly defined?"
+AI: Found orphaned records:
+    - invoices: 1,234 rows with invalid customer_id
+    - orders: 89 rows with null customer_id
+
+    Migration risk: High
+    Recommendation: Clean up before migrating
+
+Maria: "What's the relationship between orders and line_items?"
+AI: orders.id → line_items.order_ref
+
+    ⚠️  Issues:
+    - Inconsistent naming (id vs order_ref)
+    - No explicit foreign key constraint
+    - 23 line_items have invalid order_ref
+
+    Sample invalid records:
+    [Shows examples]
+```
+
+**Result:** Complete database understanding in 2 hours vs. 2 weeks. Migration plan documented. Data quality issues identified before migration.
+
+---
+
+### 🎓 Use Case 5: Learning SQL Interactively
+
+**Who:** Jamie, Computer Science Student
+**Challenge:** Learning databases for the first time, SQL syntax intimidating
+**Traditional Approach:** Read textbook → try commands → get cryptic errors → give up
+
+**With mcp-sql-explorer:**
+
+```
+Jamie: "Connect to my SQLite practice database"
+AI: ✅ Connected to SQLite
+
+Jamie: "What's in my database?"
+AI: You have 3 tables:
+    - students (25 rows)
+    - courses (8 rows)
+    - enrollments (47 rows)
+
+Jamie: "Show me all students"
+AI: SELECT * FROM students LIMIT 10;
+
+    [Shows results]
+
+    💡 Tip: In production, avoid SELECT *.
+       Specify columns: SELECT name, email FROM students
+
+Jamie: "Show me students who are enrolled in Computer Science"
+AI: I'll need to join tables for this:
+
+    SELECT s.name, c.course_name
+    FROM students s
+    JOIN enrollments e ON s.id = e.student_id
+    JOIN courses c ON e.course_id = c.id
+    WHERE c.department = 'Computer Science';
+
+    [Shows results]
+
+    📚 Concept: JOINs connect related tables
+       - students ↔ enrollments (via student_id)
+       - enrollments ↔ courses (via course_id)
+
+Jamie: "How many students are in each course?"
+AI: SELECT c.course_name, COUNT(e.student_id) as student_count
+    FROM courses c
+    LEFT JOIN enrollments e ON c.id = e.course_id
+    GROUP BY c.course_name
+    ORDER BY student_count DESC;
+
+    [Shows results]
+
+    📚 Concepts used:
+       - COUNT(): Aggregates numbers
+       - GROUP BY: Groups results
+       - LEFT JOIN: Includes courses with 0 students
+       - ORDER BY: Sorts results
+
+Jamie: "What if I want students taking more than 3 courses?"
+AI: SELECT s.name, COUNT(e.course_id) as course_count
+    FROM students s
+    JOIN enrollments e ON s.id = e.student_id
+    GROUP BY s.id, s.name
+    HAVING COUNT(e.course_id) > 3
+    ORDER BY course_count DESC;
+
+    [Shows results]
+
+    📚 Key difference:
+       - WHERE: Filters rows BEFORE grouping
+       - HAVING: Filters groups AFTER aggregation
+
+       In this case, we need HAVING because we're
+       filtering on COUNT(), which is an aggregate.
+
+Jamie: "This is making sense! Can you explain indexes?"
+AI: Great question! Indexes speed up queries.
+
+    Think of it like a book index:
+    - Without index: Read every page to find "databases"
+    - With index: Look up "databases" → jump to page 47
+
+    Your enrollments table has these indexes:
+    - PRIMARY KEY on id (automatic)
+    - INDEX on student_id (for fast student lookups)
+    - INDEX on course_id (for fast course lookups)
+
+    Want to see the performance difference?
+```
+
+**Result:** Jamie understands JOINs, aggregations, and indexes in 30 minutes. Learning through real queries, not just theory. SQL becomes approachable, not intimidating.
+
+---
 
 ### For End Users (Recommended)
 
