@@ -1,0 +1,34 @@
+name: PII scan
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  pii-scan:
+    name: PII scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for personal email domains
+        run: |
+          PATTERN="[a-zA-Z0-9._%+\-]+@(gmail|outlook|hotmail|live|icloud|me|mac|yahoo|protonmail|pm)\.(com|net|org)"
+          MATCHES=$(grep -rIiE "$PATTERN" \
+            --include="*.ts" --include="*.tsx" --include="*.js" \
+            --include="*.rs" --include="*.py" --include="*.go" \
+            --include="*.toml" --include="*.json" --include="*.yml" \
+            --include="*.yaml" --include="*.md" --include="*.rb" \
+            --include="*.html" --include="*.css" \
+            . 2>/dev/null | grep -v "node_modules" || true)
+          if [[ -n "$MATCHES" ]]; then
+            echo "BLOCKED: personal email address found in source files"
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "PII scan passed."
+
