@@ -3,7 +3,7 @@
     "sql-mcp": {
       "command": "node",
       "args": [
-        "~/Documents/projects/github/mcp-demo/mcp-sql-query/dist/index.js",
+        "~/projects/mcp-sql-query/dist/index.js",
         "--stdio"
       ],
       "env": {}
