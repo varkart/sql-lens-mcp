@@ -390,9 +390,10 @@ nvm use 20 && npm run build && npm test
 nvm use 22 && npm run build && npm test
 ```
 
-- [ ] Node 18 - Pass
 - [ ] Node 20 - Pass
 - [ ] Node 22 - Pass
+- [ ] Node 24 - Pass
+- [ ] Node 26 - Pass
 
 **Database compatibility**:
 

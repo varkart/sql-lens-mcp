@@ -6,7 +6,7 @@ Complete setup instructions for using sql-mcp with JetBrains IDEs (IntelliJ IDEA
 
 - JetBrains IDE version **2025.1 or higher** (native MCP support)
 - AI Assistant plugin enabled (bundled with paid IDEs or via subscription)
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 
 ## Supported JetBrains IDEs
 

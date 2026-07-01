@@ -7,7 +7,7 @@
 [![CI](https://github.com/varkart/sql-mcp/workflows/CI/badge.svg)](https://github.com/varkart/sql-mcp/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org)
 
 **The AI-native database client. Query any database in plain English using Model Context Protocol.**
 
@@ -763,7 +763,7 @@ Connections are persisted to `~/.mcp-sql-explorer/connections.json` (mode 0600) 
 
 ### Prerequisites
 
-- **Node.js**: 18.x or higher
+- **Node.js**: 20.x or higher
 - **npm**: 8.x or higher
 - **Docker**: Required for integration tests
 - **Git**: For version control

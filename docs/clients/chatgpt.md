@@ -14,7 +14,7 @@ ChatGPT's MCP integration differs from Claude's approach:
 ## Prerequisites
 
 - ChatGPT Plus or ChatGPT Pro subscription (required for Developer Mode)
-- Node.js 18.0.0 or higher
+- Node.js 20.0.0 or higher
 - **Option 1**: Tunneling tool (ngrok, cloudflared) for local development
 - **Option 2**: Cloud hosting for production use
 
@@ -98,7 +98,7 @@ For production use, host sql-mcp on a cloud platform with HTTPS.
 
 1. **Create Dockerfile**:
 ```dockerfile
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 COPY package*.json ./
@@ -128,7 +128,7 @@ zip -r sql-mcp.zip dist node_modules package.json
 ```
 
 2. **Deploy to Lambda**:
-   - Create Lambda function with Node.js 18 runtime
+   - Create Lambda function with Node.js 20 runtime
    - Upload zip file
    - Create API Gateway HTTP API
    - Enable CORS

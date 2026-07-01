@@ -6,7 +6,7 @@ Complete setup instructions for using sql-mcp with Cline, the VS Code extension 
 
 - Visual Studio Code installed
 - Cline extension installed ([VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 - Anthropic API key ([Get one here](https://console.anthropic.com/))
 
 ## Quick Start
@@ -174,7 +174,7 @@ This configuration only applies to the current workspace.
    - View → Output
    - Select "Cline" from dropdown
    - Look for errors mentioning sql-mcp
-2. Verify Node.js version: `node --version` (must be >= 18)
+2. Verify Node.js version: `node --version` (must be >= 20)
 3. Check JSON syntax in settings.json
 4. Reload VS Code window
 
@@ -312,7 +312,7 @@ Show me the schema of the orders table and generate a SQL migration to add a cre
 {
   "cline.mcpServers": {
     "sql-mcp": {
-      "command": "/Users/yourname/.nvm/versions/node/v18.20.0/bin/node",
+      "command": "/Users/yourname/.nvm/versions/node/v20.19.0/bin/node",
       "args": [
         "/Users/yourname/projects/sql-mcp/dist/index.js",
         "--stdio"

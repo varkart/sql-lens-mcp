@@ -19,7 +19,7 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) that all contrib
 
 ### Prerequisites
 
-- Node.js 18.x or higher
+- Node.js 20.x or higher
 - Docker Desktop (for integration tests)
 - Git
 - A GitHub account

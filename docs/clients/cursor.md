@@ -5,7 +5,7 @@ Complete setup instructions for using sql-mcp with Cursor, the AI-powered code e
 ## Prerequisites
 
 - Cursor installed ([Download here](https://cursor.sh/))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 - Cursor Pro subscription (for MCP support)
 
 ## Quick Start
@@ -190,7 +190,7 @@ Create `.cursor/settings.json` in your project root:
 **Solution**:
 1. Verify you have Cursor Pro subscription (MCP requires Pro)
 2. Check settings.json syntax is valid
-3. Ensure Node.js >= 18.0.0: `node --version`
+3. Ensure Node.js >= 20.0.0: `node --version`
 4. Completely restart Cursor (quit and reopen)
 5. Check Cursor logs:
    - macOS: `~/Library/Logs/Cursor/`
@@ -246,7 +246,7 @@ If Cursor uses a different Node.js than your terminal:
 ```bash
 # Find Node.js path
 which node
-# Example: /Users/yourname/.nvm/versions/node/v18.20.0/bin/node
+# Example: /Users/yourname/.nvm/versions/node/v20.19.0/bin/node
 
 # Use in settings.json
 ```
@@ -255,7 +255,7 @@ which node
 {
   "cursor.mcpServers": {
     "sql-mcp": {
-      "command": "/Users/yourname/.nvm/versions/node/v18.20.0/bin/node",
+      "command": "/Users/yourname/.nvm/versions/node/v20.19.0/bin/node",
       "args": ["/path/to/sql-mcp/dist/index.js", "--stdio"]
     }
   }

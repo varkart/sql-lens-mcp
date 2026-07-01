@@ -5,7 +5,7 @@ Complete setup instructions for using sql-mcp with Claude Desktop.
 ## Prerequisites
 
 - Claude Desktop installed ([Download here](https://claude.ai/download))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 
 ## Quick Start
 

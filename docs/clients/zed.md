@@ -5,7 +5,7 @@ Complete setup instructions for using sql-mcp with Zed, the high-performance cod
 ## Prerequisites
 
 - Zed installed ([Download here](https://zed.dev/))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 - Zed version with MCP support (v0.120.0+)
 
 ## Quick Start
@@ -203,7 +203,7 @@ Complete setup instructions for using sql-mcp with Zed, the high-performance cod
 **Solution**:
 1. Verify Zed version >= 0.120.0: Menu → Zed → About Zed
 2. Check settings.json syntax (no trailing commas)
-3. Confirm Node.js >= 18: `node --version`
+3. Confirm Node.js >= 20: `node --version`
 4. Check Zed logs:
    ```bash
    # View logs

@@ -8,7 +8,7 @@ Complete setup instructions for using sql-mcp with Continue, the open-source AI 
 - Continue extension installed:
   - **VS Code**: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Continue.continue)
   - **JetBrains**: [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/22707-continue)
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 
 ## Quick Start
 

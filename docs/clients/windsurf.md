@@ -5,7 +5,7 @@ Complete setup instructions for using sql-mcp with Windsurf, Codeium's AI-native
 ## Prerequisites
 
 - Windsurf installed ([Download here](https://codeium.com/windsurf))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 - Windsurf Pro (for MCP support)
 
 ## Quick Start

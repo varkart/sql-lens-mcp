@@ -275,7 +275,7 @@ Read-only access to production databases:
 ### Issue: Server not appearing in client
 
 **Quick fixes**:
-1. Check Node.js version: `node --version` (must be >= 18)
+1. Check Node.js version: `node --version` (must be >= 20)
 2. Verify config file syntax (no trailing commas in JSON)
 3. Use absolute paths for local installations
 4. Restart client completely

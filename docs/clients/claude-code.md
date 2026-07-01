@@ -6,7 +6,7 @@ Complete setup instructions for using sql-mcp with Claude Code in Visual Studio 
 
 - Visual Studio Code installed ([Download here](https://code.visualstudio.com/))
 - Claude Code extension installed ([Install from VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code))
-- Node.js 18.0.0 or higher (`node --version`)
+- Node.js 20.0.0 or higher (`node --version`)
 
 ## Quick Start
 
