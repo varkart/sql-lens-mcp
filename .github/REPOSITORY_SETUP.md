@@ -4,7 +4,7 @@ This guide walks you through configuring your GitHub repository for production o
 
 ## 🔗 Quick Access
 
-**Repository URL:** https://github.com/varkart/sql-mcp/settings
+**Repository URL:** https://github.com/varkart/mcp-sql-explorer/settings
 
 ## 1. Branch Protection Rules
 

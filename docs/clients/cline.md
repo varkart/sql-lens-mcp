@@ -414,7 +414,7 @@ Then reload VS Code window.
 - **Cline Output Panel**: View → Output → Select "Cline"
 - **VS Code Developer Tools**: Help → Toggle Developer Tools
 - **sql-mcp Troubleshooting**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
-- **GitHub Issues**: [Report issues](https://github.com/varkart/sql-mcp/issues)
+- **GitHub Issues**: [Report issues](https://github.com/varkart/mcp-sql-explorer/issues)
 
 ## Next Steps
 

@@ -530,14 +530,14 @@ Then reload window/IDE.
 - **Continue Logs**: `~/.continue/logs/` directory
 - **sql-mcp Docs**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **Continue Docs**: [continue.dev/docs](https://continue.dev/docs)
-- **GitHub Issues**: [Report issues](https://github.com/varkart/sql-mcp/issues)
+- **GitHub Issues**: [Report issues](https://github.com/varkart/mcp-sql-explorer/issues)
 
 ## Getting Help
 
 - **Continue Discord**: [Join here](https://discord.gg/EfJEfdFnDQ)
 - **sql-mcp Docs**: [README](../../README.md)
 - **Examples**: [Workflow examples](../../examples/)
-- **Community**: [GitHub Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **Community**: [GitHub Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 
 ## Next Steps
 

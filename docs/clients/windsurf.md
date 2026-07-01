@@ -458,13 +458,13 @@ Then restart Windsurf.
 - **Developer Tools**: Help → Toggle Developer Tools
 - **sql-mcp Docs**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **Windsurf Docs**: [codeium.com/windsurf/docs](https://codeium.com/windsurf/docs)
-- **GitHub Issues**: [Report issues](https://github.com/varkart/sql-mcp/issues)
+- **GitHub Issues**: [Report issues](https://github.com/varkart/mcp-sql-explorer/issues)
 
 ## Getting Help
 
 - **Documentation**: [sql-mcp README](../../README.md)
 - **Examples**: [Workflow examples](../../examples/)
-- **Community**: [GitHub Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **Community**: [GitHub Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 - **Windsurf Discord**: [Join here](https://discord.gg/codeium)
 
 ## Next Steps

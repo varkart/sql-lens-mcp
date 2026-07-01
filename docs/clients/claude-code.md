@@ -476,8 +476,8 @@ npx clear-npx-cache
 
 - **Troubleshooting Guide**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **Claude Code Docs**: [code.claude.com/docs](https://code.claude.com/docs)
-- **Issues**: [GitHub Issues](https://github.com/varkart/sql-mcp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **Issues**: [GitHub Issues](https://github.com/varkart/mcp-sql-explorer/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 
 ## Next Steps
 

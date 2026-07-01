@@ -475,14 +475,14 @@ Zed auto-detects changes.
   ```
 - **sql-mcp Docs**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **Zed Docs**: [zed.dev/docs](https://zed.dev/docs)
-- **GitHub Issues**: [Report issues](https://github.com/varkart/sql-mcp/issues)
+- **GitHub Issues**: [Report issues](https://github.com/varkart/mcp-sql-explorer/issues)
 
 ## Getting Help
 
 - **Zed Community**: [zed.dev/community](https://zed.dev/community)
 - **sql-mcp Docs**: [README](../../README.md)
 - **Examples**: [Workflow examples](../../examples/)
-- **GitHub Discussions**: [Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **GitHub Discussions**: [Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 
 ## Next Steps
 

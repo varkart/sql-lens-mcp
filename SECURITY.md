@@ -22,7 +22,7 @@ Instead, please report security issues by emailing:
 **security@varkart.com** (or create a GitHub Security Advisory)
 
 Alternatively, you can use GitHub's private vulnerability reporting:
-1. Go to the [Security tab](https://github.com/varkart/sql-mcp/security)
+1. Go to the [Security tab](https://github.com/varkart/mcp-sql-explorer/security)
 2. Click "Report a vulnerability"
 3. Fill out the advisory form
 

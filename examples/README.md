@@ -252,4 +252,4 @@ For testing, use the examples in `../test/e2e/fixtures/`:
 - Check the documentation: `../README.md`
 - Review client guides: `../docs/clients/`
 - See troubleshooting: `../TROUBLESHOOTING.md`
-- Open an issue: https://github.com/varkart/sql-mcp/issues
+- Open an issue: https://github.com/varkart/mcp-sql-explorer/issues

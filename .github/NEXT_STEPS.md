@@ -33,7 +33,7 @@ git push origin dev
 
 **Option A: Use the Quick Checklist (Recommended)**
 1. Open [.github/SETUP_CHECKLIST.md](.github/SETUP_CHECKLIST.md)
-2. Go to https://github.com/varkart/sql-mcp/settings
+2. Go to https://github.com/varkart/mcp-sql-explorer/settings
 3. Follow each checkbox in order (15-20 minutes)
 
 **Option B: Use the Detailed Guide**
@@ -135,7 +135,7 @@ npx mcp-sql-explorer --help
 Talk to your databases in plain English. Connect Claude, ChatGPT, or any
 AI assistant to PostgreSQL, MySQL, SQLite, and more.
 
-🔗 https://github.com/varkart/sql-mcp
+🔗 https://github.com/varkart/mcp-sql-explorer
 📦 npm install -g mcp-sql-explorer
 
 Features:

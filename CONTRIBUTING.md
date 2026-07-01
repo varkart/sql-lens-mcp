@@ -36,7 +36,7 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) that all contrib
 
 3. **Add upstream remote**:
    ```bash
-   git remote add upstream https://github.com/varkart/sql-mcp.git
+   git remote add upstream https://github.com/varkart/mcp-sql-explorer.git
    ```
 
 4. **Install dependencies**:
@@ -392,7 +392,7 @@ Contributors are recognized in:
 ## Questions?
 
 If you have any questions about contributing, feel free to:
-- Open a [Discussion](https://github.com/varkart/sql-mcp/discussions)
+- Open a [Discussion](https://github.com/varkart/mcp-sql-explorer/discussions)
 - Ask in an existing issue
 - Reach out to maintainers
 

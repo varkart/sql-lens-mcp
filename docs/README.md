@@ -60,6 +60,6 @@ docs/
 ## External Resources
 
 - [npm Package](https://www.npmjs.com/package/sql-mcp)
-- [GitHub Repository](https://github.com/varkart/sql-mcp)
+- [GitHub Repository](https://github.com/varkart/mcp-sql-explorer)
 - [Model Context Protocol](https://modelcontextprotocol.io)
-- [Issue Tracker](https://github.com/varkart/sql-mcp/issues)
+- [Issue Tracker](https://github.com/varkart/mcp-sql-explorer/issues)

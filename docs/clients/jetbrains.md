@@ -491,7 +491,7 @@ npx clear-npx-cache
 
 - **JetBrains MCP Documentation**: [jetbrains.com/help/ai-assistant/mcp.html](https://www.jetbrains.com/help/ai-assistant/mcp.html)
 - **IntelliJ MCP Blog**: [IntelliJ IDEA 2025.1 ❤️ MCP](https://blog.jetbrains.com/idea/2025/05/intellij-idea-2025-1-model-context-protocol/)
-- **sql-mcp Issues**: [GitHub Issues](https://github.com/varkart/sql-mcp/issues)
+- **sql-mcp Issues**: [GitHub Issues](https://github.com/varkart/mcp-sql-explorer/issues)
 - **JetBrains Support**: [jetbrains.com/support](https://www.jetbrains.com/support/)
 
 ## Resources

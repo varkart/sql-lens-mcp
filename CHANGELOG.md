@@ -70,5 +70,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-[Unreleased]: https://github.com/varkart/sql-mcp/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/varkart/sql-mcp/releases/tag/v1.0.0
+[Unreleased]: https://github.com/varkart/mcp-sql-explorer/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/varkart/mcp-sql-explorer/releases/tag/v1.0.0

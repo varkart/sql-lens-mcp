@@ -448,13 +448,13 @@ Then restart Cursor.
 - **Developer Console**: Help → Toggle Developer Tools
 - **sql-mcp Troubleshooting**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **Cursor Docs**: [cursor.sh/docs](https://cursor.sh/docs)
-- **GitHub Issues**: [Report issues](https://github.com/varkart/sql-mcp/issues)
+- **GitHub Issues**: [Report issues](https://github.com/varkart/mcp-sql-explorer/issues)
 
 ## Getting Help
 
 - **Documentation**: [sql-mcp README](../../README.md)
 - **Examples**: [Example workflows](../../examples/)
-- **Community**: [GitHub Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **Community**: [GitHub Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 - **Cursor Community**: [Cursor Forum](https://forum.cursor.sh/)
 
 ## Next Steps

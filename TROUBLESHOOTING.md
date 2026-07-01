@@ -439,7 +439,7 @@ npm list --depth=0
 
 ### Get Help
 
-1. **Check existing issues**: https://github.com/varkart/sql-mcp/issues
+1. **Check existing issues**: https://github.com/varkart/mcp-sql-explorer/issues
 2. **Open a new issue** with:
    - Output from debug-server.js
    - Your MCP client config (remove sensitive data)

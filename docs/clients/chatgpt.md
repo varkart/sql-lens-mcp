@@ -27,7 +27,7 @@ Use a tunnel to expose your local sql-mcp server as HTTPS endpoint.
 #### Step 1: Install sql-mcp
 
 ```bash
-git clone https://github.com/varkart/sql-mcp.git
+git clone https://github.com/varkart/mcp-sql-explorer.git
 cd sql-mcp
 npm install
 npm run build
@@ -414,7 +414,7 @@ Current limitations of ChatGPT MCP integration:
 
 - **Troubleshooting**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - **ChatGPT Developer Docs**: [developers.openai.com/api/docs/mcp](https://developers.openai.com/api/docs/mcp)
-- **Issues**: [GitHub Issues](https://github.com/varkart/sql-mcp/issues)
+- **Issues**: [GitHub Issues](https://github.com/varkart/mcp-sql-explorer/issues)
 - **OpenAI Community**: [community.openai.com](https://community.openai.com)
 
 ## Resources

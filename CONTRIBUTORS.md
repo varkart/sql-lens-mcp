@@ -18,7 +18,7 @@ Contributors are recognized in the following ways:
 - Listed on this page
 - Mentioned in release notes
 - Credited in pull request merge commits
-- Listed on the [GitHub Contributors page](https://github.com/varkart/sql-mcp/graphs/contributors)
+- Listed on the [GitHub Contributors page](https://github.com/varkart/mcp-sql-explorer/graphs/contributors)
 
 ## Security Researchers
 

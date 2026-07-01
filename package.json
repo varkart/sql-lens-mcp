@@ -48,12 +48,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/varkart/sql-mcp.git"
+    "url": "git+https://github.com/varkart/mcp-sql-explorer.git"
   },
   "bugs": {
-    "url": "https://github.com/varkart/sql-mcp/issues"
+    "url": "https://github.com/varkart/mcp-sql-explorer/issues"
   },
-  "homepage": "https://github.com/varkart/sql-mcp#readme",
+  "homepage": "https://github.com/varkart/mcp-sql-explorer#readme",
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/varkart"

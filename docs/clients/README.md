@@ -389,8 +389,8 @@ Insert 3 sample users into the test database, then show me all users
 ## Getting Help
 
 - **Client-specific issues**: See individual client guides above
-- **sql-mcp issues**: [GitHub Issues](https://github.com/varkart/sql-mcp/issues)
-- **General questions**: [GitHub Discussions](https://github.com/varkart/sql-mcp/discussions)
+- **sql-mcp issues**: [GitHub Issues](https://github.com/varkart/mcp-sql-explorer/issues)
+- **General questions**: [GitHub Discussions](https://github.com/varkart/mcp-sql-explorer/discussions)
 - **Troubleshooting**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 
 ## Next Steps
@@ -419,4 +419,4 @@ Don't see your client? sql-mcp works with any MCP-compatible client. The general
 }
 ```
 
-Check your client's MCP documentation for the specific configuration format, or [open an issue](https://github.com/varkart/sql-mcp/issues) to request a setup guide.
+Check your client's MCP documentation for the specific configuration format, or [open an issue](https://github.com/varkart/mcp-sql-explorer/issues) to request a setup guide.

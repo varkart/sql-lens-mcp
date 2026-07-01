@@ -2,9 +2,9 @@
 
 [![npm version](https://img.shields.io/npm/v/mcp-sql-explorer.svg)](https://www.npmjs.com/package/mcp-sql-explorer)
 [![npm downloads](https://img.shields.io/npm/dm/mcp-sql-explorer.svg)](https://www.npmjs.com/package/mcp-sql-explorer)
-[![GitHub stars](https://img.shields.io/github/stars/varkart/sql-mcp?style=social)](https://github.com/varkart/sql-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/varkart/mcp-sql-explorer?style=social)](https://github.com/varkart/mcp-sql-explorer)
 [![Status](https://img.shields.io/badge/status-production--ready-brightgreen)]()
-[![CI](https://github.com/varkart/sql-mcp/workflows/CI/badge.svg)](https://github.com/varkart/sql-mcp/actions)
+[![CI](https://github.com/varkart/mcp-sql-explorer/workflows/CI/badge.svg)](https://github.com/varkart/mcp-sql-explorer/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org)
@@ -633,7 +633,7 @@ mcp-sql-explorer --version
 
 **Local Development**:
 ```bash
-git clone https://github.com/varkart/sql-mcp.git
+git clone https://github.com/varkart/mcp-sql-explorer.git
 cd sql-mcp
 npm install
 npm run build
@@ -772,7 +772,7 @@ Connections are persisted to `~/.mcp-sql-explorer/connections.json` (mode 0600) 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/varkart/sql-mcp.git
+git clone https://github.com/varkart/mcp-sql-explorer.git
 cd sql-mcp
 ```
 
@@ -1226,9 +1226,9 @@ We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING
 For security vulnerabilities, please see our [Security Policy](SECURITY.md).
 
 Quick links:
-- [Report a bug](https://github.com/varkart/sql-mcp/issues/new?template=bug_report.md)
-- [Request a feature](https://github.com/varkart/sql-mcp/issues/new?template=feature_request.md)
-- [Ask a question](https://github.com/varkart/sql-mcp/discussions)
+- [Report a bug](https://github.com/varkart/mcp-sql-explorer/issues/new?template=bug_report.md)
+- [Request a feature](https://github.com/varkart/mcp-sql-explorer/issues/new?template=feature_request.md)
+- [Ask a question](https://github.com/varkart/mcp-sql-explorer/discussions)
 
 Thank you for contributing to mcp-sql-explorer!
 
@@ -1244,4 +1244,4 @@ Copyright (c) 2024 vk
 
 **Maintained By**: [@varkart](https://github.com/varkart)
 
-**Repository**: https://github.com/varkart/sql-mcp
+**Repository**: https://github.com/varkart/mcp-sql-explorer
