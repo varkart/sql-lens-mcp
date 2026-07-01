@@ -41,7 +41,7 @@ async function main() {
     logger.setLevel('debug');
   }
 
-  logger.info('Starting sql-mcp server');
+  logger.info('Starting sql-lens-mcp server');
 
   try {
     const config = await loadConfig(args.config);

@@ -4,12 +4,12 @@ import { homedir } from 'os';
 import type { ConnectionEntry } from '../utils/types.js';
 import { logger } from '../utils/logger.js';
 
-const SQL_MCP_DIR = join(homedir(), '.sql-mcp');
-const CONNECTIONS_FILE = join(SQL_MCP_DIR, 'connections.json');
+const SQL_LENS_MCP_DIR = join(homedir(), '.sql-lens-mcp');
+const CONNECTIONS_FILE = join(SQL_LENS_MCP_DIR, 'connections.json');
 
 export async function ensureDirectory(): Promise<void> {
   try {
-    await fs.mkdir(SQL_MCP_DIR, { mode: 0o700, recursive: true });
+    await fs.mkdir(SQL_LENS_MCP_DIR, { mode: 0o700, recursive: true });
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
     if (err.code !== 'EEXIST') {

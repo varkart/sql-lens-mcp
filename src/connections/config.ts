@@ -9,9 +9,9 @@ export async function loadConfig(configPath?: string): Promise<ServerConfig | nu
   const searchPaths = configPath
     ? [configPath]
     : [
-        join(process.cwd(), 'sql-mcp.config.json'),
-        join(homedir(), '.sql-mcp', 'config.json'),
-        join(homedir(), '.sql-mcp.config.json'),
+        join(process.cwd(), 'sql-lens-mcp.config.json'),
+        join(homedir(), '.sql-lens-mcp', 'config.json'),
+        join(homedir(), '.sql-lens-mcp.config.json'),
       ];
 
   for (const path of searchPaths) {
@@ -52,12 +52,12 @@ function processConfig(config: any): ServerConfig {
   }
 
   // MCP Apps configuration with environment variable support
-  const appsEnabled = process.env.SQL_MCP_APPS_ENABLED
-    ? process.env.SQL_MCP_APPS_ENABLED !== 'false'
+  const appsEnabled = process.env.SQL_LENS_MCP_APPS_ENABLED
+    ? process.env.SQL_LENS_MCP_APPS_ENABLED !== 'false'
     : config.apps?.enabled !== false; // Default: true
 
-  const connectionManagerEnabled = process.env.SQL_MCP_APP_CONNECTION_MANAGER_ENABLED
-    ? process.env.SQL_MCP_APP_CONNECTION_MANAGER_ENABLED !== 'false'
+  const connectionManagerEnabled = process.env.SQL_LENS_MCP_APP_CONNECTION_MANAGER_ENABLED
+    ? process.env.SQL_LENS_MCP_APP_CONNECTION_MANAGER_ENABLED !== 'false'
     : config.apps?.connectionManager?.enabled !== false; // Default: true
 
   return {

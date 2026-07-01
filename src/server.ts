@@ -10,7 +10,7 @@ const queryHistory: QueryHistoryEntry[] = [];
 export async function createServer(config?: ServerConfig) {
   const manager = new ConnectionManager();
   const server = new McpServer({
-    name: 'sql-mcp',
+    name: 'sql-lens-mcp',
     version: '1.0.0',
   }, {
     capabilities: {
