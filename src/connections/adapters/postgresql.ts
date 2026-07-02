@@ -1,5 +1,5 @@
 import pg from 'pg';
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
 import { logger } from '../../utils/logger.js';
@@ -8,6 +8,7 @@ const { Pool } = pg;
 
 export class PostgreSQLAdapter implements DatabaseAdapter {
   readonly type = 'postgresql';
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'session';
   private pool: pg.Pool | null = null;
   private config: ConnectionConfig | null = null;
   private readOnlyMode = false;
@@ -75,6 +76,9 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
     const client = await this.pool.connect();
 
     try {
+      const readOnly = this.readOnlyMode || options.readOnly === true;
+      await client.query(`SET default_transaction_read_only = ${readOnly ? 'on' : 'off'}`);
+
       if (options.timeout) {
         await client.query(`SET statement_timeout = ${options.timeout}`);
       }
@@ -226,12 +230,10 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
     }
 
     this.readOnlyMode = readOnly;
-    const client = await this.pool.connect();
-    try {
-      await client.query(`SET default_transaction_read_only = ${readOnly ? 'true' : 'false'}`);
-    } finally {
-      client.release();
-    }
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 
   private mapPostgresType(typeId: number): string {

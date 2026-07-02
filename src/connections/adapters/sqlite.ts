@@ -1,11 +1,12 @@
 import Database from 'better-sqlite3';
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
 import { logger } from '../../utils/logger.js';
 
 export class SQLiteAdapter implements DatabaseAdapter {
   readonly type = 'sqlite';
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'session';
   private db: Database.Database | null = null;
   private readOnlyMode = false;
 
@@ -187,5 +188,9 @@ export class SQLiteAdapter implements DatabaseAdapter {
 
     this.readOnlyMode = readOnly;
     this.db.pragma(`query_only = ${readOnly ? 'ON' : 'OFF'}`);
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 }

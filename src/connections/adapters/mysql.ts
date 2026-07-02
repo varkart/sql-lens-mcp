@@ -1,11 +1,12 @@
 import mysql from 'mysql2/promise';
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
 import { logger } from '../../utils/logger.js';
 
 export class MySQLAdapter implements DatabaseAdapter {
   readonly type = 'mysql';
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'session';
   private pool: mysql.Pool | null = null;
   private config: ConnectionConfig | null = null;
   private readOnlyMode = false;
@@ -73,6 +74,9 @@ export class MySQLAdapter implements DatabaseAdapter {
     const connection = await this.pool.getConnection();
 
     try {
+      const readOnly = this.readOnlyMode || options.readOnly === true;
+      await connection.query(readOnly ? 'SET SESSION TRANSACTION READ ONLY' : 'SET SESSION TRANSACTION READ WRITE');
+
       if (options.timeout && options.timeout > 0) {
         await connection.query(`SET SESSION max_execution_time = ${Math.floor(options.timeout)}`);
       }
@@ -208,16 +212,10 @@ export class MySQLAdapter implements DatabaseAdapter {
     }
 
     this.readOnlyMode = readOnly;
-    const connection = await this.pool.getConnection();
-    try {
-      if (readOnly) {
-        await connection.query('SET SESSION TRANSACTION READ ONLY');
-      } else {
-        await connection.query('SET SESSION TRANSACTION READ WRITE');
-      }
-    } finally {
-      connection.release();
-    }
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 
   private mapMySQLType(type: number): string {

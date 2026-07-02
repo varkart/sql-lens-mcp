@@ -1,11 +1,12 @@
 import * as mariadb from 'mariadb';
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
 import { logger } from '../../utils/logger.js';
 
 export class MariaDBAdapter implements DatabaseAdapter {
   readonly type = 'mariadb';
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'session';
   private pool: mariadb.Pool | null = null;
   private config: ConnectionConfig | null = null;
   private readOnlyMode = false;
@@ -71,6 +72,9 @@ export class MariaDBAdapter implements DatabaseAdapter {
     const connection = await this.pool.getConnection();
 
     try {
+      const readOnly = this.readOnlyMode || options.readOnly === true;
+      await connection.query(readOnly ? 'SET SESSION TRANSACTION READ ONLY' : 'SET SESSION TRANSACTION READ WRITE');
+
       if (options.timeout) {
         await connection.query(`SET SESSION max_statement_time = ${options.timeout / 1000}`);
       }
@@ -207,15 +211,9 @@ export class MariaDBAdapter implements DatabaseAdapter {
     }
 
     this.readOnlyMode = readOnly;
-    const connection = await this.pool.getConnection();
-    try {
-      if (readOnly) {
-        await connection.query('SET SESSION TRANSACTION READ ONLY');
-      } else {
-        await connection.query('SET SESSION TRANSACTION READ WRITE');
-      }
-    } finally {
-      connection.release();
-    }
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 }

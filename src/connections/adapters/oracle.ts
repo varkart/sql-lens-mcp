@@ -1,12 +1,19 @@
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
+import { assertReadOnly } from '../../security/query-validator.js';
 import { logger } from '../../utils/logger.js';
 
 export class OracleAdapter implements DatabaseAdapter {
   readonly type = 'oracle';
+  // Oracle has no session-level read-only mode. SET TRANSACTION READ ONLY is
+  // applied per statement in execute() and blocks DML, but DDL performs an
+  // implicit commit that escapes it, so the per-statement guard is the
+  // primary control.
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'guard';
   private oracledb: any = null;
   private connection: any = null;
+  private readOnlyMode = false;
 
   async connect(config: ConnectionConfig): Promise<void> {
     try {
@@ -19,6 +26,8 @@ export class OracleAdapter implements DatabaseAdapter {
           throw new ConnectionError('oracledb module not available. Install it with: npm install oracledb');
         }
       }
+
+      this.readOnlyMode = config.readOnly ?? false;
 
       const connectString = `${config.host}:${config.port || 1521}/${config.database}`;
 
@@ -53,9 +62,19 @@ export class OracleAdapter implements DatabaseAdapter {
       throw new ConnectionError('Not connected to Oracle');
     }
 
+    const readOnly = this.readOnlyMode || options.readOnly === true;
+    if (readOnly) {
+      assertReadOnly(sql, 'oracle');
+    }
+
     const startTime = Date.now();
 
     try {
+      if (readOnly) {
+        await this.connection.rollback();
+        await this.connection.execute('SET TRANSACTION READ ONLY');
+      }
+
       const result = await this.connection.execute(sql, params, {
         outFormat: this.oracledb.OUT_FORMAT_OBJECT,
         maxRows: options.maxRows || 100000,
@@ -91,6 +110,10 @@ export class OracleAdapter implements DatabaseAdapter {
         throw new TimeoutError(`Query timeout: ${err.message}`);
       }
       throw new QueryError(`Oracle query failed: ${err.message}`);
+    } finally {
+      if (readOnly && this.connection) {
+        await this.connection.rollback().catch(() => undefined);
+      }
     }
   }
 
@@ -208,8 +231,12 @@ export class OracleAdapter implements DatabaseAdapter {
     };
   }
 
-  async setReadOnly(_readOnly: boolean): Promise<void> {
-    // Oracle read-only mode not implemented
+  async setReadOnly(readOnly: boolean): Promise<void> {
+    this.readOnlyMode = readOnly;
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 
   private mapOracleType(dbType: any): string {

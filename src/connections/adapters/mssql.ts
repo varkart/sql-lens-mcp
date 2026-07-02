@@ -1,11 +1,17 @@
 import mssql from 'mssql';
-import type { DatabaseAdapter } from './base.js';
+import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
+import { assertReadOnly } from '../../security/query-validator.js';
 import { logger } from '../../utils/logger.js';
 
 export class MSSQLAdapter implements DatabaseAdapter {
   readonly type = 'mssql';
+  // SQL Server has no session-level read-only mode: SET TRANSACTION ISOLATION
+  // LEVEL does not prevent writes and ApplicationIntent=ReadOnly is only
+  // honored by Availability Group read replicas. Read-only is therefore
+  // enforced by a per-statement guard in execute().
+  readonly readOnlyEnforcement: ReadOnlyEnforcement = 'guard';
   private pool: mssql.ConnectionPool | null = null;
   private readOnlyMode = false;
 
@@ -35,10 +41,6 @@ export class MSSQLAdapter implements DatabaseAdapter {
       this.pool = new mssql.ConnectionPool(poolConfig);
       await this.pool.connect();
 
-      if (this.readOnlyMode) {
-        await this.pool.request().query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
-      }
-
       logger.info('MSSQL connection established', { host: config.host, database: config.database });
     } catch (error) {
       const err = error as Error;
@@ -62,6 +64,11 @@ export class MSSQLAdapter implements DatabaseAdapter {
   async execute(sql: string, params: unknown[] = [], options: ExecuteOptions = {}): Promise<QueryResult> {
     if (!this.pool) {
       throw new ConnectionError('Not connected to MSSQL');
+    }
+
+    const readOnly = this.readOnlyMode || options.readOnly === true;
+    if (readOnly) {
+      assertReadOnly(sql, 'mssql');
     }
 
     const startTime = Date.now();
@@ -215,8 +222,9 @@ export class MSSQLAdapter implements DatabaseAdapter {
     }
 
     this.readOnlyMode = readOnly;
-    if (readOnly) {
-      await this.pool.request().query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
-    }
+  }
+
+  isReadOnly(): boolean {
+    return this.readOnlyMode;
   }
 }
