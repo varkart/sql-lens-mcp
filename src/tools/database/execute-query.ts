@@ -34,7 +34,7 @@ export const registerExecuteQueryTool: ToolRegistration = (server, { manager, qu
 
         validateQuery(args.sql, readOnly, dialect);
 
-        if (!readOnly && requiresConfirmation(args.sql) && supportsElicitation(server)) {
+        if (!readOnly && requiresConfirmation(args.sql, dialect) && supportsElicitation(server)) {
           const decision = await confirmDestructiveQuery(server, args.sql);
           if (decision !== 'confirmed') {
             return {

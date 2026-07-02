@@ -1,12 +1,15 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { classifyStatement } from '../security/query-validator.js';
+import type { DatabaseType } from '../utils/types.js';
 
 export type ConfirmationResult = 'confirmed' | 'declined' | 'cancelled';
 
-export function requiresConfirmation(sql: string): boolean {
-  const statementType = classifyStatement(sql);
+export function requiresConfirmation(sql: string, dialect?: DatabaseType): boolean {
+  const statementType = classifyStatement(sql, dialect);
 
-  if (statementType === 'DROP' || statementType === 'ALTER') {
+  // Unparseable statements fail closed: confirm before executing anything
+  // the classifier cannot vouch for.
+  if (statementType === 'DROP' || statementType === 'ALTER' || statementType === 'UNKNOWN') {
     return true;
   }
 
