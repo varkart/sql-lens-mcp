@@ -1,4 +1,5 @@
 # Development files
+.claude/
 test/
 tests/
 test-dist/
