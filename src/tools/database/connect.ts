@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import type { ToolRegistration } from '../types.js';
+import { supportsElicitation } from '../../elicitation/capabilities.js';
+import { getMissingConnectionParams, elicitConnectionParams } from '../../elicitation/connection-setup.js';
 
 export const registerConnectTool: ToolRegistration = (server, { manager }) => {
   server.registerTool(
@@ -24,8 +26,42 @@ export const registerConnectTool: ToolRegistration = (server, { manager }) => {
     async (args) => {
       try {
         const { id, name, env, type, ...configFields } = args;
+        let config = { type, ...configFields };
 
-        await manager.connect(id, { type, ...configFields }, { name, env });
+        const missing = getMissingConnectionParams(type, config);
+        if (missing.length > 0) {
+          if (!supportsElicitation(server)) {
+            return {
+              content: [{
+                type: 'text' as const,
+                text: `✗ Missing required parameters for ${type} connection: ${missing.join(', ')}`,
+              }],
+            };
+          }
+
+          const setup = await elicitConnectionParams(server, type, config);
+          if (setup.status !== 'completed') {
+            return {
+              content: [{
+                type: 'text' as const,
+                text: `✗ Connection setup ${setup.status} by user`,
+              }],
+            };
+          }
+
+          config = { ...config, ...setup.values };
+          const stillMissing = getMissingConnectionParams(type, config);
+          if (stillMissing.length > 0) {
+            return {
+              content: [{
+                type: 'text' as const,
+                text: `✗ Missing required parameters for ${type} connection: ${stillMissing.join(', ')}`,
+              }],
+            };
+          }
+        }
+
+        await manager.connect(id, config, { name, env });
 
         const connection = manager.getConnection(id);
         const tableCount = connection?.schema?.tables.length || 0;

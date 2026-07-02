@@ -3,6 +3,8 @@ import type { ToolRegistration } from '../types.js';
 import { validateQuery, classifyStatement } from '../../security/query-validator.js';
 import { buildExecuteOptions } from '../../security/sandbox.js';
 import { renderTable } from '../../visualization/ascii-table.js';
+import { supportsElicitation } from '../../elicitation/capabilities.js';
+import { requiresConfirmation, confirmDestructiveQuery } from '../../elicitation/query-confirmation.js';
 
 const MAX_HISTORY = 50;
 
@@ -30,6 +32,18 @@ export const registerExecuteQueryTool: ToolRegistration = (server, { manager, qu
         const readOnly = connection?.config.readOnly ?? true;
 
         validateQuery(args.sql, readOnly);
+
+        if (!readOnly && requiresConfirmation(args.sql) && supportsElicitation(server)) {
+          const decision = await confirmDestructiveQuery(server, args.sql);
+          if (decision !== 'confirmed') {
+            return {
+              content: [{
+                type: 'text' as const,
+                text: `✗ Query not executed: destructive statement ${decision} by user`,
+              }],
+            };
+          }
+        }
 
         const options = buildExecuteOptions(
           { queryTimeout: 30000, maxRows: 1000, readOnly },
