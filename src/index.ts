@@ -1,27 +1,35 @@
 #!/usr/bin/env node
 
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { createServer, autoConnect } from './server.js';
+import { createServerContext, createMcpServer, autoConnect } from './server.js';
+import { startStdioTransport, startHttpTransport } from './transport/index.js';
 import { loadConfig } from './connections/config.js';
 import { logger } from './utils/logger.js';
 
+const DEFAULT_HTTP_PORT = 3000;
+const DEFAULT_HTTP_HOST = '127.0.0.1';
+
 interface CliArgs {
-  stdio?: boolean;
+  http: boolean;
   config?: string;
   debug?: boolean;
-  port?: number;
+  port: number;
+  host: string;
 }
 
 function parseArgs(): CliArgs {
   const args: CliArgs = {
-    stdio: true,
+    http: process.env.SQL_LENS_MCP_HTTP === 'true',
+    port: parseInt(process.env.SQL_LENS_MCP_PORT ?? '', 10) || DEFAULT_HTTP_PORT,
+    host: process.env.SQL_LENS_MCP_HOST || DEFAULT_HTTP_HOST,
   };
 
   for (let i = 2; i < process.argv.length; i++) {
     const arg = process.argv[i];
 
     if (arg === '--stdio') {
-      args.stdio = true;
+      args.http = false;
+    } else if (arg === '--http') {
+      args.http = true;
     } else if (arg === '--config' && i + 1 < process.argv.length) {
       args.config = process.argv[++i];
     } else if (arg === '--debug') {
@@ -46,31 +54,29 @@ async function main() {
   try {
     const config = await loadConfig(args.config);
 
-    const { server, manager } = await createServer(config || undefined);
+    const context = createServerContext(config || undefined);
+    const serverFactory = () => createMcpServer(context);
 
-    const ready = autoConnect(manager, config);
+    const ready = autoConnect(context.manager, config);
 
     process.on('SIGINT', async () => {
       logger.info('Received SIGINT, shutting down gracefully');
-      await manager.disconnectAll();
+      await context.manager.disconnectAll();
       process.exit(0);
     });
 
     process.on('SIGTERM', async () => {
       logger.info('Received SIGTERM, shutting down gracefully');
-      await manager.disconnectAll();
+      await context.manager.disconnectAll();
       process.exit(0);
     });
 
     await ready;
 
-    if (args.stdio || !args.port) {
-      const transport = new StdioServerTransport();
-      logger.info('Server starting in stdio mode');
-      await server.connect(transport);
+    if (args.http) {
+      await startHttpTransport(serverFactory, { port: args.port, host: args.host });
     } else {
-      logger.error('HTTP mode not yet implemented');
-      process.exit(1);
+      await startStdioTransport(serverFactory);
     }
   } catch (error) {
     const err = error as Error;
