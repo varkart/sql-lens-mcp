@@ -742,10 +742,69 @@ node dist/index.js [options]
 
 Options:
   --stdio          Use stdio transport (default)
+  --http           Use Streamable HTTP transport
   --config <path>  Path to config file
   --debug          Enable debug logging
-  --port <number>  HTTP port (not yet implemented)
+  --port <number>  HTTP port (default: 3000)
 ```
+
+## HTTP Transport
+
+In addition to stdio (the default), the server supports the MCP Streamable HTTP transport for clients that connect over the network.
+
+### Starting the server
+
+```bash
+# CLI flags
+npx -y sql-lens-mcp --http --port 3000
+
+# Or environment variables
+SQL_LENS_MCP_HTTP=true SQL_LENS_MCP_PORT=3000 npx -y sql-lens-mcp
+```
+
+| Setting | CLI flag | Environment variable | Default |
+|---------|----------|----------------------|---------|
+| Enable HTTP | `--http` | `SQL_LENS_MCP_HTTP=true` | disabled (stdio) |
+| Port | `--port <number>` | `SQL_LENS_MCP_PORT` | `3000` |
+| Bind address | — | `SQL_LENS_MCP_HOST` | `127.0.0.1` |
+
+The MCP endpoint is served at `http://<host>:<port>/mcp`.
+
+### Sessions
+
+The server runs in stateful mode: each `initialize` request creates a new session and the session ID is returned in the `mcp-session-id` response header. Clients must send this header on all subsequent requests. A `DELETE /mcp` request with the session header terminates the session. Database connections are shared across sessions within the process.
+
+### Example: initialize with curl
+
+```bash
+curl -i -X POST http://127.0.0.1:3000/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"curl","version":"1.0"}}}'
+```
+
+The response includes the `mcp-session-id` header to use on follow-up requests.
+
+### Example: client configuration
+
+For clients that support Streamable HTTP servers:
+
+```json
+{
+  "mcpServers": {
+    "sql-lens-mcp": {
+      "type": "http",
+      "url": "http://127.0.0.1:3000/mcp"
+    }
+  }
+}
+```
+
+### Security notes
+
+- The server binds to `127.0.0.1` by default, so it is only reachable from the local machine.
+- DNS rebinding protection is enabled when bound to a loopback address: requests with unexpected `Host` headers are rejected with `403`.
+- The HTTP transport has **no built-in authentication or TLS**. If you need to expose it beyond localhost (via `SQL_LENS_MCP_HOST`), put it behind a reverse proxy that provides authentication and TLS; when bound to a non-loopback address, DNS rebinding protection is disabled so the proxy can forward arbitrary `Host` headers.
 
 ## Connection Persistence
 

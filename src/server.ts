@@ -4,11 +4,21 @@ import { loadConnections } from './connections/persistence.js';
 import { logger } from './utils/logger.js';
 import type { ServerConfig, QueryHistoryEntry } from './utils/types.js';
 import { registerAllTools } from './tools/index.js';
+import type { ToolContext } from './tools/types.js';
 
-const queryHistory: QueryHistoryEntry[] = [];
+export type ServerContext = ToolContext;
 
-export async function createServer(config?: ServerConfig) {
-  const manager = new ConnectionManager();
+export function createServerContext(config?: ServerConfig): ServerContext {
+  const queryHistory: QueryHistoryEntry[] = [];
+
+  return {
+    manager: new ConnectionManager(),
+    queryHistory,
+    config,
+  };
+}
+
+export function createMcpServer(context: ServerContext): McpServer {
   const server = new McpServer({
     name: 'sql-lens-mcp',
     version: '1.0.0',
@@ -20,10 +30,16 @@ export async function createServer(config?: ServerConfig) {
     },
   });
 
-  // Register all tools, resources, and prompts
-  registerAllTools(server, { manager, queryHistory, config });
+  registerAllTools(server, context);
 
-  return { server, manager };
+  return server;
+}
+
+export async function createServer(config?: ServerConfig) {
+  const context = createServerContext(config);
+  const server = createMcpServer(context);
+
+  return { server, manager: context.manager };
 }
 
 export async function autoConnect(manager: ConnectionManager, config: ServerConfig | null) {
