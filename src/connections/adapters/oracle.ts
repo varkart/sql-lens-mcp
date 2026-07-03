@@ -93,7 +93,7 @@ export class OracleAdapter implements DatabaseAdapter {
           }))
         : [];
 
-      const { rows, truncated } = applyRowWindow(result.rows || [], options);
+      const { rows, truncated } = applyRowWindow((result.rows || []) as Record<string, unknown>[], options);
 
       logger.debug('Oracle query executed', { rowCount: rows.length, executionTimeMs });
 

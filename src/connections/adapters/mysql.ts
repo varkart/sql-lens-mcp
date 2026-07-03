@@ -91,14 +91,14 @@ export class MySQLAdapter implements DatabaseAdapter {
         nullable: (Number(field.flags ?? 0) & 1) === 0,
       })) : [];
 
-      const resultRows = Array.isArray(rows) ? rows : [];
+      const resultRows = (Array.isArray(rows) ? rows : []) as Record<string, unknown>[];
       const { rows: slicedRows, truncated } = applyRowWindow(resultRows, options);
 
       logger.debug('MySQL query executed', { rowCount: slicedRows.length, executionTimeMs });
 
       return {
         columns,
-        rows: slicedRows as Record<string, unknown>[],
+        rows: slicedRows,
         rowCount: slicedRows.length,
         truncated,
         executionTimeMs,
