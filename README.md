@@ -86,17 +86,21 @@ Manage multiple connections simultaneously, switch between databases seamlessly.
 Automatically discovers schemas, indexes, foreign keys, and constraints.
 
 ### 🛡️ Query Safely with Built-in Security
-- **Read-only mode** for production databases
-- **Query validation** blocks dangerous operations
+- **Read-only mode enforced by the database session** — writes fail inside the database itself, not just in a filter
+- **Parser-based query validation** classifies statements from the SQL AST and fails closed on anything it cannot parse
+- **Destructive-statement confirmation** — DROP, ALTER, and DELETE-without-WHERE prompt for explicit approval (on clients that support MCP elicitation)
 - **Timeout protection** prevents runaway queries
-- **Row limits** prevent memory exhaustion
-- **SQL injection prevention** with parameterized queries
+- **Row limits and pagination** keep memory bounded
+- **SQL injection prevention** with parameterized queries and strict identifier validation
 
 ### 📊 Visualize Results
 Results displayed as formatted ASCII tables and charts directly in your AI chat interface.
 
 ### 💾 Persistent Connections
 Connections automatically saved and restored between sessions. No need to re-enter credentials every time.
+
+### 🙋 Interactive Setup
+On clients that support MCP elicitation, `connect_database` asks for any missing connection details (host, database, credentials) through a form instead of failing - and potentially destructive statements ask for confirmation before running.
 
 ---
 
@@ -723,7 +727,7 @@ Environment variables in passwords are supported using `${VAR_NAME}` syntax.
 - `list_connections` - List all connections with status
 
 ### Query Execution
-- `execute_query` - Execute SQL with validation and formatting
+- `execute_query` - Execute SQL with validation, formatting, and offset pagination (`hasMore`/`nextOffset` metadata when results are truncated)
 - `nl_query` - Natural language to SQL with optional auto-execute
 
 ### Schema Intelligence
@@ -736,6 +740,8 @@ Environment variables in passwords are supported using `${VAR_NAME}` syntax.
 
 - `sql://connections` - JSON list of all connections
 - `sql://history` - Last 50 query executions
+- `query-result://{connectionId}/csv` - Most recent query result for a connection as CSV
+- `query-result://{connectionId}/json` - Most recent query result for a connection as JSON
 
 ## MCP Prompts
 
@@ -818,9 +824,14 @@ Connections are persisted to `~/.sql-lens-mcp/connections.json` (mode 0600) for 
 
 ## Security
 
-- Multi-statement queries are blocked
-- Dangerous patterns (LOAD_FILE, xp_cmdshell, etc.) are blocked
-- Read-only mode prevents write operations
+Defense in depth, outermost layer first:
+
+- **Session-level read-only enforcement** - read-only connections are enforced by the database itself: PostgreSQL/MySQL/MariaDB set read-only transactions on the session, SQLite and DuckDB open the file read-only, MSSQL and Oracle use a per-statement guard
+- **AST-based query validation** - statements are classified by parsing the SQL (per dialect), so CTEs and EXPLAIN work in read-only mode while unparseable input fails closed
+- **Multi-statement queries are blocked** (string-literal aware - semicolons inside strings do not false-positive)
+- **Dangerous patterns blocked** (LOAD_FILE, xp_cmdshell, INTO OUTFILE, etc.) as a second layer
+- **Destructive-statement confirmation** - on clients that support MCP elicitation, DROP/ALTER/DELETE-without-WHERE require explicit user approval before executing
+- **Strict identifier validation** - table and schema names passed to tools are validated against a strict pattern and quoted per dialect
 - Query timeout limits (max 5 minutes)
 - Row limits (max 100,000 rows)
 
