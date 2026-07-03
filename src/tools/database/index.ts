@@ -4,3 +4,6 @@ export { registerListConnectionsTool } from './list-connections.js';
 export { registerExecuteQueryTool } from './execute-query.js';
 export { registerNlQueryTool } from './nl-query.js';
 export { registerDescribeSchemaTool } from './describe-schema.js';
+export { registerSampleRowsTool } from './sample-rows.js';
+export { registerExplainQueryTool } from './explain-query.js';
+export { registerDescribeRelationshipsTool } from './describe-relationships.js';

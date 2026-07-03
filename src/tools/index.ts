@@ -9,6 +9,9 @@ import {
   registerExecuteQueryTool,
   registerNlQueryTool,
   registerDescribeSchemaTool,
+  registerSampleRowsTool,
+  registerExplainQueryTool,
+  registerDescribeRelationshipsTool,
 } from './database/index.js';
 
 // Resources
@@ -38,6 +41,9 @@ export function registerAllTools(server: McpServer, context: ToolContext): void 
   registerExecuteQueryTool(server, context);
   registerNlQueryTool(server, context);
   registerDescribeSchemaTool(server, context);
+  registerSampleRowsTool(server, context);
+  registerExplainQueryTool(server, context);
+  registerDescribeRelationshipsTool(server, context);
 
   // Register resources
   registerConnectionsResource(server, context);
