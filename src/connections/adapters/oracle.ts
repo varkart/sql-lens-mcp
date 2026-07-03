@@ -1,3 +1,4 @@
+import { applyRowWindow, DEFAULT_MAX_ROWS } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import { clampSampleLimit, groupRelationshipRows } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey, TableRelationship } from '../../utils/types.js';
@@ -76,9 +77,11 @@ export class OracleAdapter implements DatabaseAdapter {
         await this.connection.execute('SET TRANSACTION READ ONLY');
       }
 
+      // Fetch one extra row beyond the window so truncation is detected
+      // without buffering the full result set in the driver.
       const result = await this.connection.execute(sql, params, {
         outFormat: this.oracledb.OUT_FORMAT_OBJECT,
-        maxRows: options.maxRows || 100000,
+        maxRows: Math.max(0, options.offset ?? 0) + (options.maxRows || DEFAULT_MAX_ROWS) + 1,
       });
 
       const executionTimeMs = Date.now() - startTime;
@@ -91,9 +94,7 @@ export class OracleAdapter implements DatabaseAdapter {
           }))
         : [];
 
-      const maxRows = options.maxRows || 100000;
-      const rows = result.rows || [];
-      const truncated = rows.length >= maxRows;
+      const { rows, truncated } = applyRowWindow((result.rows || []) as Record<string, unknown>[], options);
 
       logger.debug('Oracle query executed', { rowCount: rows.length, executionTimeMs });
 

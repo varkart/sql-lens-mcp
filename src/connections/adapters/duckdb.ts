@@ -1,5 +1,6 @@
 import { DuckDBInstance, DuckDBConnection, ResultReturnType } from '@duckdb/node-api';
 import type { DuckDBValue } from '@duckdb/node-api';
+import { applyRowWindow } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import { clampSampleLimit } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey, TableRelationship } from '../../utils/types.js';
@@ -101,9 +102,7 @@ export class DuckDBAdapter implements DatabaseAdapter {
           nullable: true,
         }));
 
-        const maxRows = options.maxRows || 100000;
-        const slicedRows = rows.slice(0, maxRows);
-        const truncated = rows.length > maxRows;
+        const { rows: slicedRows, truncated } = applyRowWindow(rows, options);
 
         logger.debug('DuckDB query executed', { rowCount: slicedRows.length, executionTimeMs });
 

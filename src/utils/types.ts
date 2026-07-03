@@ -116,7 +116,19 @@ export interface QueryHistoryEntry {
 export interface ExecuteOptions {
   timeout?: number;
   maxRows?: number;
+  offset?: number;
   readOnly?: boolean;
+}
+
+export interface StoredQueryResult {
+  connectionId: string;
+  sql: string;
+  columns: ColumnInfo[];
+  rows: Record<string, unknown>[];
+  rowCount: number;
+  offset: number;
+  hasMore: boolean;
+  executedAt: Date;
 }
 
 export interface CrossDbPlan {

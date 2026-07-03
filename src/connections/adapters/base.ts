@@ -77,6 +77,14 @@ export interface DatabaseAdapter {
   connect(config: ConnectionConfig): Promise<void>;
   disconnect(): Promise<void>;
   isConnected(): boolean;
+  /**
+   * Execute a statement and return at most `options.maxRows` rows starting at
+   * `options.offset` (default 0). `QueryResult.truncated` must be true when
+   * more rows exist beyond the returned window. Adapters that can skip rows
+   * cheaply (e.g. SQLite's row iterator) apply the window natively; the rest
+   * fall back to `applyRowWindow` on the driver's buffered result. Offset
+   * pagination re-executes the query on every page.
+   */
   execute(sql: string, params?: unknown[], options?: ExecuteOptions): Promise<QueryResult>;
   getSchema(): Promise<SchemaInfo>;
   setReadOnly(readOnly: boolean): Promise<void>;
@@ -103,4 +111,20 @@ export interface DatabaseAdapter {
    * the dialect supports it.
    */
   getRelationships(schema?: string): Promise<TableRelationship[]>;
+}
+
+export const DEFAULT_MAX_ROWS = 100000;
+
+/**
+ * Shared fallback for applying the offset/maxRows window to a buffered row
+ * array. Returns at most maxRows rows starting at offset, and reports
+ * truncated when rows exist beyond the window.
+ */
+export function applyRowWindow<T>(rows: readonly T[], options: ExecuteOptions = {}): { rows: T[]; truncated: boolean } {
+  const offset = Math.max(0, options.offset ?? 0);
+  const maxRows = options.maxRows || DEFAULT_MAX_ROWS;
+  return {
+    rows: rows.slice(offset, offset + maxRows),
+    truncated: rows.length > offset + maxRows,
+  };
 }

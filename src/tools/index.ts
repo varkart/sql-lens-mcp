@@ -18,6 +18,7 @@ import {
 import {
   registerConnectionsResource,
   registerHistoryResource,
+  registerQueryResultResources,
 } from './resources/index.js';
 
 // Prompts
@@ -48,6 +49,7 @@ export function registerAllTools(server: McpServer, context: ToolContext): void 
   // Register resources
   registerConnectionsResource(server, context);
   registerHistoryResource(server, context);
+  registerQueryResultResources(server, context);
 
   // Register prompts
   registerExploreDatabasePrompt(server, context);

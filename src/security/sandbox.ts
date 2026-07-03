@@ -14,6 +14,10 @@ export function clampOptions(options: ExecuteOptions): ExecuteOptions {
     clamped.maxRows = Math.min(clamped.maxRows, MAX_ROW_LIMIT);
   }
 
+  if (clamped.offset !== undefined) {
+    clamped.offset = Math.max(0, Math.floor(clamped.offset));
+  }
+
   return clamped;
 }
 
@@ -24,6 +28,7 @@ export function buildExecuteOptions(
   const options: ExecuteOptions = {
     timeout: overrides.timeout ?? defaults.queryTimeout,
     maxRows: overrides.maxRows ?? defaults.maxRows,
+    offset: overrides.offset ?? 0,
     readOnly: overrides.readOnly ?? defaults.readOnly,
   };
 

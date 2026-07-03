@@ -8,15 +8,16 @@ import { requiresConfirmation, confirmDestructiveQuery } from '../../elicitation
 
 const MAX_HISTORY = 50;
 
-export const registerExecuteQueryTool: ToolRegistration = (server, { manager, queryHistory }) => {
+export const registerExecuteQueryTool: ToolRegistration = (server, { manager, queryHistory, lastResults }) => {
   server.registerTool(
     'execute_query',
     {
-      description: 'Execute a SQL query',
+      description: 'Execute a SQL query. Results are paginated: at most maxRows rows are returned per call. When the response reports hasMore, call again with offset=nextOffset to fetch the next page. Each page re-executes the query (offset pagination), so paging an expensive query repeats its cost. The most recent result per connection is also exposed as query-result://{connectionId}/csv and query-result://{connectionId}/json resources.',
       inputSchema: z.object({
         connectionId: z.string().describe('Connection ID'),
         sql: z.string().describe('SQL query'),
-        maxRows: z.number().optional().describe('Max rows to return'),
+        maxRows: z.number().optional().describe('Max rows to return per page'),
+        offset: z.number().optional().describe('Rows to skip before returning results (default 0); use nextOffset from a truncated response to fetch the next page'),
         timeout: z.number().optional().describe('Query timeout in ms'),
         format: z.enum(['table', 'json', 'raw']).optional().describe('Output format'),
       }),
@@ -48,7 +49,7 @@ export const registerExecuteQueryTool: ToolRegistration = (server, { manager, qu
 
         const options = buildExecuteOptions(
           { queryTimeout: 30000, maxRows: 1000, readOnly },
-          { timeout: args.timeout, maxRows: args.maxRows }
+          { timeout: args.timeout, maxRows: args.maxRows, offset: args.offset }
         );
 
         const result = await adapter.execute(args.sql, [], options);
@@ -66,6 +67,24 @@ export const registerExecuteQueryTool: ToolRegistration = (server, { manager, qu
           queryHistory.pop();
         }
 
+        const offset = options.offset ?? 0;
+        const returnedRows = result.rows.length;
+        const hasMore = result.truncated;
+        const nextOffset = hasMore ? offset + returnedRows : undefined;
+
+        if (result.columns.length > 0) {
+          lastResults.set(args.connectionId, {
+            connectionId: args.connectionId,
+            sql: args.sql,
+            columns: result.columns,
+            rows: result.rows,
+            rowCount: returnedRows,
+            offset,
+            hasMore,
+            executedAt: new Date(),
+          });
+        }
+
         const format = args.format || 'table';
         let output: string;
 
@@ -77,11 +96,30 @@ export const registerExecuteQueryTool: ToolRegistration = (server, { manager, qu
           output = renderTable(result);
         }
 
+        let summary: string;
+        if (result.columns.length === 0) {
+          summary = `${result.rowCount} row(s) affected`;
+        } else {
+          summary = [
+            hasMore
+              ? `Returned ${returnedRows} rows starting at offset ${offset}. More rows available: call execute_query again with offset=${nextOffset} to fetch the next page (each page re-executes the query).`
+              : `Returned ${returnedRows} rows starting at offset ${offset}. No more rows.`,
+            `Export this result: query-result://${args.connectionId}/csv or query-result://${args.connectionId}/json`,
+            `metadata: ${JSON.stringify({ returnedRows, offset, hasMore, ...(nextOffset !== undefined ? { nextOffset } : {}) })}`,
+          ].join('\n');
+        }
+
         return {
-          content: [{
-            type: 'text' as const,
-            text: output,
-          }],
+          content: [
+            {
+              type: 'text' as const,
+              text: output,
+            },
+            {
+              type: 'text' as const,
+              text: summary,
+            },
+          ],
         };
       } catch (error) {
         const err = error as Error;
