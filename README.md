@@ -33,7 +33,6 @@ AI: ✅ Connected to PostgreSQL (read-only mode enabled)
 - [What You Can Do](#what-you-can-do)
 - [Quick Start](#quick-start)
 - [Examples](#examples)
-- [Installation](#installation)
 - [Why sql-lens-mcp?](#why-sql-lens-mcp)
 - [💼 Real-World Use Cases](#-real-world-use-cases)
 - [Supported Clients](#supported-clients)
@@ -110,18 +109,24 @@ Get up and running in under 2 minutes.
 
 ### Step 1: Install
 
-**Using NPX** (recommended - auto-updates):
+**Using npx** (recommended - always runs the latest version):
 ```bash
-# No installation needed! Use directly:
+# No global install required - run directly with npx:
 npx -y sql-lens-mcp --stdio
 ```
+npx downloads the package on first run and caches it for subsequent runs.
 
 **Or install globally:**
 ```bash
 npm install -g sql-lens-mcp
+
+# Verify installation
+sql-lens-mcp --version
 ```
 
-### Step 2: Configure Your AI Client
+Building from source instead? See [DEVELOPMENT.md](DEVELOPMENT.md).
+
+### Step 2: Configure Your AI Assistant
 
 Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
@@ -168,7 +173,7 @@ See [all client configs →](docs/clients/)
 
 ### Step 3: Restart & Test
 
-1. **Restart your AI client** completely (quit and reopen)
+1. **Restart your AI assistant** completely (quit and reopen)
 2. **Test the connection**:
    ```
    You: "Connect to an in-memory SQLite database with ID 'test'"
@@ -271,8 +276,6 @@ AI: Missing tables in staging:
 ```
 
 ---
-
-## Installation
 
 ## Why sql-lens-mcp?
 
@@ -615,45 +618,6 @@ AI: Great question! Indexes speed up queries.
 ```
 
 **Result:** Jamie understands JOINs, aggregations, and indexes in 30 minutes. Learning through real queries, not just theory. SQL becomes approachable, not intimidating.
-
----
-
-### For End Users (Recommended)
-
-**Method 1: NPX** (zero installation, auto-updates):
-```bash
-# Use directly without installing
-npx -y sql-lens-mcp --stdio
-```
-
-**Method 2: Global Installation**:
-```bash
-npm install -g sql-lens-mcp
-
-# Verify installation
-sql-lens-mcp --version
-```
-
-### For Developers
-
-**Local Development**:
-```bash
-git clone https://github.com/varkart/sql-lens-mcp.git
-cd sql-lens-mcp
-npm install
-npm run build
-
-# Test the server
-npm test
-```
-
-Then configure your MCP client with the absolute path to `dist/index.js`.
-
-**From Source**:
-```bash
-npm pack
-npm install -g ./sql-lens-mcp-1.0.0.tgz
-```
 
 ---
 
