@@ -38,9 +38,14 @@ AI: ✅ Connected to PostgreSQL (read-only mode enabled)
 - [Supported Clients](#supported-clients)
 - [Configuration](#configuration)
 - [MCP Tools](#mcp-tools)
+- [MCP Resources](#mcp-resources)
+- [MCP Prompts](#mcp-prompts)
+- [CLI Options](#cli-options)
+- [HTTP Transport](#http-transport)
 - [Security](#security)
 - [Database Support](#database-support)
-- [Local Development](#local-development-setup)
+- [Testing](#testing)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -297,264 +302,103 @@ AI: Missing tables in staging:
 ### 📊 Use Case 1: Sales Performance Analysis
 
 **Who:** Sarah, Business Analyst at an e-commerce company
-**Challenge:** Needs to analyze Q4 sales trends for executive presentation, but doesn't know SQL
-**Traditional Approach:** Submit request to data team → wait 2-3 days → get CSV → realize need different data → repeat
-
-**With sql-lens-mcp:**
+**Challenge:** Needs to analyze Q4 sales trends for an executive presentation, but doesn't know SQL
 
 ```
 Sarah: "Connect to the production database in read-only mode"
 AI: ✅ Connected to PostgreSQL (read-only mode enabled for safety)
 
 Sarah: "Show me top 10 products by revenue in Q4 2024"
-AI: Analyzing sales data...
-
-    Product Name          | Revenue    | Units Sold
-    --------------------- | ---------- | ----------
-    Premium Widget Pro    | $247,500   | 450
-    Smart Gadget Elite    | $189,200   | 820
-    ...
+AI: [formatted revenue table]
 
 Sarah: "Which region had the highest growth compared to Q3?"
 AI: West region showed strongest growth:
     Q3 2024: $2.1M → Q4 2024: $3.1M (47% increase)
-
     Key driver: Electronics category (+89%)
-    Top product: Premium Widget Pro
-
-Sarah: "Show me hourly sales pattern for Premium Widget Pro"
-AI: [ASCII chart showing 24-hour sales distribution]
-
-    Peak hours: 8-9 PM EST (32% of daily volume)
-    Lowest: 3-4 AM EST (2% of daily volume)
-
-    Recommendation: Focus ad spend on 6-10 PM window
 ```
 
-**Result:** Complete analysis in 15 minutes vs. 3 days. Sarah delivers insights in real-time during meeting.
+**Result:** Complete analysis in 15 minutes vs. 3 days waiting on the data team.
 
 ---
 
 ### 💻 Use Case 2: Production Bug Investigation
 
 **Who:** Alex, Senior Developer
-**Challenge:** API endpoint timing out in production, need to find the root cause quickly
-**Traditional Approach:** SSH to production → run raw SQL → risk of typos → manual analysis → coordinate with DBA
-
-**With sql-lens-mcp:**
+**Challenge:** API endpoint timing out in production, needs the root cause quickly
 
 ```
-Alex: "Connect to prod-api database"
-AI: ✅ Connected to MySQL (read-only mode)
-
 Alex: "Show me the slowest API requests in the last hour"
-AI: SELECT endpoint, AVG(response_time_ms) as avg_time,
-         COUNT(*) as count
-    FROM api_logs
-    WHERE timestamp > NOW() - INTERVAL 1 HOUR
-    GROUP BY endpoint
-    ORDER BY avg_time DESC
-    LIMIT 10;
+AI: /api/users/dashboard averages 4,500ms across 342 requests
 
-    Endpoint                    | Avg Time | Count
-    --------------------------- | -------- | -----
-    /api/users/dashboard        | 4,500ms  | 342
-    /api/products/search        | 2,100ms  | 1,891
-    ...
-
-Alex: "What queries are running against the users table from the dashboard endpoint?"
-AI: Found 3 queries. The slow one is:
-
-    SELECT u.*, p.*, o.*, ...
-    FROM users u
-    LEFT JOIN profiles p ON ...
-    LEFT JOIN orders o ON ...
-    WHERE u.id = ?
-
-    ⚠️  Issues detected:
+Alex: "What queries are running against the users table from that endpoint?"
+AI: Found the slow query. Issues detected:
     - SELECT * fetching 47 columns (only 8 used)
-    - N+1 query pattern (runs for each user)
+    - N+1 query pattern
     - Missing index on orders.user_id
 
-Alex: "Show me index usage on orders table"
-AI: Current indexes:
-    - PRIMARY KEY (id)
-    - INDEX created_at
-
-    ❌ Missing: user_id index
+Alex: "Show me index usage on the orders table"
+AI: ❌ Missing: user_id index
     ✅ Recommendation: CREATE INDEX idx_user_id ON orders(user_id);
-
-Alex: "How many users are affected by this slow query?"
-AI: 342 unique users in the last hour.
-    Average response time: 4.5 seconds
-    Expected with index: ~200ms (estimated 95% improvement)
 ```
 
-**Result:** Root cause identified in 10 minutes. Fix deployed, confirmed 96% improvement. No production risk from manual queries.
+**Result:** Root cause identified in 10 minutes; the fix delivered a 96% improvement. No production risk from hand-typed queries.
 
 ---
 
 ### 🔧 Use Case 3: Incident Investigation
 
 **Who:** Jordan, Site Reliability Engineer
-**Challenge:** Overnight spike in error rates, need to investigate cause during incident call
-**Traditional Approach:** Write SQL from memory under pressure → potential mistakes → coordinate with on-call DBA → manual correlation
-
-**With sql-lens-mcp:**
+**Challenge:** Overnight spike in error rates, investigating live during an incident call
 
 ```
-Jordan: "Connect to prod-monitoring database"
-AI: ✅ Connected to PostgreSQL
-
 Jordan: "Show me error rates by service in the last 6 hours"
-AI: [Table showing error counts]
+AI: api-gateway: 45,231 errors (↑ 2,300%)
+    99.2% are 504 Gateway Timeouts, starting at 02:14 UTC
 
-    api-gateway: 45,231 errors (↑ 2,300%)
-    auth-service: 12 errors (normal)
-    data-service: 89 errors (normal)
-
-Jordan: "What types of errors is api-gateway throwing?"
-AI: Error breakdown:
-    - 504 Gateway Timeout: 44,891 (99.2%)
-    - 500 Internal Server Error: 340 (0.8%)
-
-    Pattern: Started at 02:14 AM UTC
-
-Jordan: "Show me what changed in the api-gateway config around 2 AM"
-AI: Found deployment at 02:12 AM UTC:
-    Version: v2.4.1 → v2.4.2
-    Change: Updated connection pool settings
-
-    New config:
-    - max_connections: 100 → 50 (⚠️ reduced)
-    - timeout: 30s → 10s (⚠️ reduced)
+Jordan: "What changed in the api-gateway config around 2 AM?"
+AI: Deployment at 02:12 UTC (v2.4.2):
+    max_connections reduced from 100 → 50
 
 Jordan: "How many concurrent connections were we hitting at 2 AM?"
-AI: Average concurrent connections at 02:14-02:20 AM: 87
-    Peak: 94 connections
-
-    ⚠️  Current limit: 50 connections
-
-    Diagnosis: Connection pool exhausted after deploy
-
-Jordan: "Show me when this was working previously"
-AI: Last 7 days connection usage:
-    - Average: 72 connections
-    - Peak: 118 connections (3 AM traffic spike)
-
-    ✅ Previous limit (100) was adequate
-    ❌ New limit (50) insufficient
+AI: Peak: 94 connections against the new limit of 50
+    Diagnosis: connection pool exhausted after deploy
 ```
 
-**Result:** Incident cause found in 8 minutes. Rollback initiated. Postmortem data already collected.
+**Result:** Incident cause found in 8 minutes. Rollback initiated, postmortem data already collected.
 
 ---
 
 ### 🗄️ Use Case 4: Legacy Database Migration
 
 **Who:** Maria, Software Engineer
-**Challenge:** Tasked with migrating 15-year-old legacy system, no documentation exists
-**Traditional Approach:** Manual exploration → draw ER diagrams → guess relationships → hope nothing breaks
-
-**With sql-lens-mcp:**
+**Challenge:** Migrating a 15-year-old legacy system with no documentation
 
 ```
-Maria: "Connect to legacy-crm database"
-AI: ✅ Connected to MSSQL
-
 Maria: "What tables exist in this database?"
 AI: Found 47 tables. Most active:
-    - customers (124,891 rows)
-    - orders (1.2M rows)
-    - products (8,432 rows)
-    - invoices (890,234 rows)
-    ...
+    customers (124,891 rows), orders (1.2M rows), invoices (890,234 rows)
 
-Maria: "Explain the customers table structure"
-AI: Table: customers
-
-    Columns:
-    - id (int, PRIMARY KEY)
-    - legacy_id (varchar) ⚠️ Still in use
-    - name (varchar)
-    - created_date (datetime)
-    - status (int) ⚠️ No foreign key
-    ...
-
-    Relationships:
-    → orders.customer_id
-    → invoices.cust_id (⚠️ inconsistent naming)
-
-Maria: "What are the possible values for status?"
-AI: SELECT DISTINCT status, COUNT(*)
-    FROM customers
-    GROUP BY status;
-
-    Status | Count    | Notes
-    ------ | -------- | -----
-    0      | 45,231   | Likely 'inactive'
-    1      | 78,890   | Likely 'active'
-    2      | 770      | Unknown
-
+Maria: "What are the possible values for customers.status?"
+AI: 0 (45,231 rows), 1 (78,890 rows), 2 (770 rows)
     ⚠️  No enum or lookup table found
-
-Maria: "Show me customers with status = 2"
-AI: Found 770 customers:
-    - All have created_date before 2015
-    - All have orders.status = 'refunded'
-
-    Inference: status = 2 means 'refunded accounts'
 
 Maria: "Are there any foreign keys not properly defined?"
 AI: Found orphaned records:
     - invoices: 1,234 rows with invalid customer_id
     - orders: 89 rows with null customer_id
-
-    Migration risk: High
-    Recommendation: Clean up before migrating
-
-Maria: "What's the relationship between orders and line_items?"
-AI: orders.id → line_items.order_ref
-
-    ⚠️  Issues:
-    - Inconsistent naming (id vs order_ref)
-    - No explicit foreign key constraint
-    - 23 line_items have invalid order_ref
-
-    Sample invalid records:
-    [Shows examples]
+    Recommendation: clean up before migrating
 ```
 
-**Result:** Complete database understanding in 2 hours vs. 2 weeks. Migration plan documented. Data quality issues identified before migration.
+**Result:** Complete database understanding in 2 hours vs. 2 weeks. Data quality issues identified before migration.
 
 ---
 
 ### 🎓 Use Case 5: Learning SQL Interactively
 
 **Who:** Jamie, Computer Science Student
-**Challenge:** Learning databases for the first time, SQL syntax intimidating
-**Traditional Approach:** Read textbook → try commands → get cryptic errors → give up
-
-**With sql-lens-mcp:**
+**Challenge:** Learning databases for the first time; SQL syntax feels intimidating
 
 ```
-Jamie: "Connect to my SQLite practice database"
-AI: ✅ Connected to SQLite
-
-Jamie: "What's in my database?"
-AI: You have 3 tables:
-    - students (25 rows)
-    - courses (8 rows)
-    - enrollments (47 rows)
-
-Jamie: "Show me all students"
-AI: SELECT * FROM students LIMIT 10;
-
-    [Shows results]
-
-    💡 Tip: In production, avoid SELECT *.
-       Specify columns: SELECT name, email FROM students
-
 Jamie: "Show me students who are enrolled in Computer Science"
 AI: I'll need to join tables for this:
 
@@ -564,60 +408,17 @@ AI: I'll need to join tables for this:
     JOIN courses c ON e.course_id = c.id
     WHERE c.department = 'Computer Science';
 
-    [Shows results]
-
     📚 Concept: JOINs connect related tables
-       - students ↔ enrollments (via student_id)
-       - enrollments ↔ courses (via course_id)
-
-Jamie: "How many students are in each course?"
-AI: SELECT c.course_name, COUNT(e.student_id) as student_count
-    FROM courses c
-    LEFT JOIN enrollments e ON c.id = e.course_id
-    GROUP BY c.course_name
-    ORDER BY student_count DESC;
-
-    [Shows results]
-
-    📚 Concepts used:
-       - COUNT(): Aggregates numbers
-       - GROUP BY: Groups results
-       - LEFT JOIN: Includes courses with 0 students
-       - ORDER BY: Sorts results
 
 Jamie: "What if I want students taking more than 3 courses?"
-AI: SELECT s.name, COUNT(e.course_id) as course_count
-    FROM students s
-    JOIN enrollments e ON s.id = e.student_id
-    GROUP BY s.id, s.name
-    HAVING COUNT(e.course_id) > 3
-    ORDER BY course_count DESC;
-
-    [Shows results]
+AI: [query using GROUP BY and HAVING]
 
     📚 Key difference:
        - WHERE: Filters rows BEFORE grouping
        - HAVING: Filters groups AFTER aggregation
-
-       In this case, we need HAVING because we're
-       filtering on COUNT(), which is an aggregate.
-
-Jamie: "This is making sense! Can you explain indexes?"
-AI: Great question! Indexes speed up queries.
-
-    Think of it like a book index:
-    - Without index: Read every page to find "databases"
-    - With index: Look up "databases" → jump to page 47
-
-    Your enrollments table has these indexes:
-    - PRIMARY KEY on id (automatic)
-    - INDEX on student_id (for fast student lookups)
-    - INDEX on course_id (for fast course lookups)
-
-    Want to see the performance difference?
 ```
 
-**Result:** Jamie understands JOINs, aggregations, and indexes in 30 minutes. Learning through real queries, not just theory. SQL becomes approachable, not intimidating.
+**Result:** Jamie understands JOINs, aggregations, and indexes in 30 minutes — learning through real queries, not just theory.
 
 ---
 
@@ -799,420 +600,6 @@ Defense in depth, outermost layer first:
 - Query timeout limits (max 5 minutes)
 - Row limits (max 100,000 rows)
 
-## Local Development Setup
-
-### Prerequisites
-
-- **Node.js**: 20.x or higher
-- **npm**: 8.x or higher
-- **Docker**: Required for integration tests
-- **Git**: For version control
-
-### Initial Setup
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/varkart/sql-lens-mcp.git
-cd sql-lens-mcp
-```
-
-2. **Install dependencies**
-```bash
-npm install
-```
-
-3. **Build the project**
-```bash
-npm run build
-```
-
-4. **Create a test configuration** (optional)
-```bash
-cp examples/configs/sql-lens-mcp.config.example.json sql-lens-mcp.config.json
-# Edit sql-lens-mcp.config.json with your database credentials
-```
-
-### Development Workflow
-
-```bash
-# Start TypeScript compiler in watch mode
-npm run dev
-
-# In another terminal, run the server
-npm start -- --config sql-lens-mcp.config.json --debug
-
-# Format code
-npm run format
-
-# Lint code
-npm run lint
-
-# Clean build artifacts
-npm run clean
-```
-
-## Testing
-
-### Quick Start Testing
-
-**Without Docker (Unit Tests Only)**:
-```bash
-npm run test:unit
-```
-
-**With Docker (Full Test Suite)**:
-```bash
-# 1. Start Docker Desktop
-# 2. Run all tests
-npm test
-```
-
-### Manual Testing
-
-For manual testing and experimentation, you can use pre-configured test databases:
-
-**Option 1: In-Memory SQLite (Fast, No Docker)**
-```bash
-# Build and run the demo
-npm run build
-npx tsc create-test-db.ts demo-test-db.ts --module nodenext --moduleResolution nodenext --target es2022 --lib es2022 --esModuleInterop
-node demo-test-db.js
-```
-
-**Option 2: Docker Compose (Real Databases)**
-```bash
-# Start all databases (PostgreSQL, MySQL, MariaDB, MSSQL)
-cd test/e2e
-docker compose up -d
-
-# Seed with test data
-./setup.sh
-
-# Stop when done
-docker compose down
-cd ../..
-```
-
-See [TESTING.md](docs/TESTING.md) for detailed testing instructions and [test/e2e/README.md](test/e2e/README.md) for E2E test setup.
-
-### Test Structure
-
-The project includes comprehensive unit and integration tests using Testcontainers.
-
-#### Prerequisites
-- **Docker Desktop**: Must be running for integration tests
-- **4GB+ RAM**: Recommended for running multiple containers
-- **Disk Space**: ~2GB for container images (downloaded once)
-
-#### Test Commands
-
-```bash
-# Run all tests (unit + integration)
-npm test
-
-# Unit tests only (fast, no Docker required)
-npm run test:unit
-
-# Integration tests only (requires Docker)
-npm run test:integration
-
-# Watch mode (auto-rerun on file changes)
-npm run test:watch
-```
-
-#### What Gets Tested
-
-**Unit Tests** (~1-2 seconds):
-- Query validation and classification
-- Security checks (multi-statement, dangerous patterns)
-- Read-only mode enforcement
-- Statement type detection
-
-**Integration Tests** (~30-60 seconds):
-- Real database connections (PostgreSQL, MySQL, MariaDB, MSSQL)
-- Query execution with parameters
-- Schema introspection
-- Row limiting and pagination
-- Connection lifecycle management
-- Multi-database operations
-- Schema caching
-
-#### Test Containers
-
-Integration tests automatically spin up Docker containers:
-
-| Database   | Image                              | Version | Startup Time |
-|------------|------------------------------------|---------|--------------|
-| PostgreSQL | `postgres:16-alpine`               | 16      | ~5-10s       |
-| MySQL      | `mysql:8.4`                        | 8.4     | ~10-15s      |
-| MariaDB    | `mariadb:11.4`                     | 11.4    | ~10-15s      |
-| MSSQL      | `mcr.microsoft.com/mssql/server:2022` | 2022 | ~15-20s      |
-
-**Container Features**:
-- ✅ Automatic startup and cleanup
-- ✅ Parallel initialization for speed
-- ✅ Isolated per test run
-- ✅ No data persistence between runs
-- ✅ Random port assignment (no conflicts)
-
-#### First-Time Test Run
-
-The first run will:
-1. Download Docker images (~2GB total)
-2. Take 2-3 minutes to pull images
-3. Subsequent runs are much faster (~30-60s)
-
-```bash
-# First run (downloads images)
-npm test
-# Output: Pulling images... (this happens once)
-
-# Subsequent runs (uses cached images)
-npm test
-# Output: Starting containers... (fast)
-```
-
-#### Troubleshooting Tests
-
-**Docker not running**:
-```
-Error: Cannot connect to Docker daemon
-Solution: Start Docker Desktop
-```
-
-**Port conflicts**:
-```
-Error: Port already in use
-Solution: Testcontainers uses random ports automatically
-```
-
-**Out of memory**:
-```
-Error: Container killed (OOM)
-Solution: Increase Docker memory to 4GB+ in Docker Desktop settings
-```
-
-**Slow tests**:
-```
-First run: Normal (downloading images)
-Subsequent runs: Check Docker Desktop resources
-```
-
-See [test/README.md](test/README.md) for detailed testing documentation.
-
-## Development Standards
-
-### Code Style
-
-- **TypeScript**: Strict mode enabled
-- **Module System**: ES modules (`type: "module"`)
-- **Target**: ES2022
-- **Formatting**: Prettier with 2-space indentation
-- **Linting**: ESLint with TypeScript rules
-
-### Commit Standards
-
-**Format**:
-```
-<type>: <subject>
-
-<body>
-
-<footer>
-```
-
-**Types**:
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `test`: Test additions or changes
-- `refactor`: Code refactoring
-- `perf`: Performance improvements
-- `chore`: Build/tooling changes
-
-**Examples**:
-```bash
-git commit -m "feat: Add MariaDB adapter with connection pooling"
-
-git commit -m "fix: Prevent SQL injection in parameterized queries
-
-- Updated query validator to escape parameters
-- Added tests for malicious input
-- Closes #123"
-
-git commit -m "test: Add integration tests for MSSQL adapter"
-```
-
-### Branch Strategy
-
-- **`main`**: Production-ready code
-- **`dev`**: Development branch for integration
-- **`feature/*`**: Feature branches (branch from `dev`)
-- **`fix/*`**: Bug fix branches (branch from `dev`)
-
-**Workflow**:
-```bash
-# Create feature branch
-git checkout dev
-git pull origin dev
-git checkout -b feature/add-oracle-support
-
-# Make changes and commit
-git add .
-git commit -m "feat: Add Oracle database adapter"
-
-# Push and create PR
-git push -u origin feature/add-oracle-support
-# Create PR: feature/add-oracle-support → dev
-```
-
-### Pull Request Guidelines
-
-**Before Submitting**:
-- ✅ All tests pass (`npm test`)
-- ✅ Code is formatted (`npm run format`)
-- ✅ No lint errors (`npm run lint`)
-- ✅ TypeScript compiles (`npm run build`)
-- ✅ Added tests for new features
-- ✅ Updated documentation
-
-**PR Title Format**:
-```
-feat: Add support for Oracle database connections
-fix: Resolve memory leak in connection pooling
-docs: Update testing documentation with troubleshooting
-```
-
-**PR Description Template**:
-```markdown
-## Summary
-Brief description of changes
-
-## Changes
-- Added Oracle adapter
-- Implemented connection pooling
-- Added integration tests
-
-## Testing
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] Tested with Oracle 19c
-- [ ] Manual testing completed
-
-## Breaking Changes
-None / List any breaking changes
-
-## Related Issues
-Closes #123
-```
-
-### Code Review Checklist
-
-**Reviewers should verify**:
-- [ ] Code follows TypeScript best practices
-- [ ] All tests pass in CI/CD
-- [ ] No security vulnerabilities introduced
-- [ ] Documentation is updated
-- [ ] Changes are backward compatible (or breaking changes documented)
-- [ ] Error handling is comprehensive
-- [ ] Logging is appropriate (debug/info/warn/error)
-- [ ] No sensitive data in logs or commits
-
-## Development
-
-### Project Structure
-
-```
-sql-lens-mcp/
-├── src/                    # TypeScript source code
-│   ├── connections/        # Database connection management
-│   ├── security/          # Security and validation
-│   ├── sampling/          # NL-to-SQL conversion
-│   ├── cross-db/          # Cross-database queries
-│   ├── visualization/     # ASCII rendering
-│   ├── elicitation/       # Interactive forms
-│   ├── utils/             # Shared utilities
-│   ├── server.ts          # MCP server
-│   └── index.ts           # CLI entry point
-├── test/                  # Test files (mirrors src structure)
-│   ├── unit/             # Unit tests
-│   ├── integration/      # Integration tests
-│   └── helpers/          # Test utilities
-├── dist/                 # Compiled JavaScript (gitignored)
-└── .github/workflows/    # CI/CD pipelines
-```
-
-### Available Scripts
-
-```bash
-# Development
-npm run dev              # TypeScript watch mode
-npm start                # Run the server
-npm run build            # Compile TypeScript
-npm run clean            # Remove build artifacts
-
-# Code Quality
-npm run lint             # Run ESLint
-npm run format           # Format with Prettier
-
-# Testing
-npm test                 # All tests
-npm run test:unit        # Unit tests only
-npm run test:integration # Integration tests only
-npm run test:watch       # Watch mode
-```
-
-### Adding a New Database Adapter
-
-1. **Create adapter file**: `src/connections/adapters/newdb.ts`
-2. **Implement `DatabaseAdapter` interface**
-3. **Add to adapter registry**: `src/connections/manager.ts`
-4. **Create integration test**: `test/integration/adapters/newdb.test.ts`
-5. **Update documentation**: Add to README Database Support table
-6. **Add to testcontainers**: `test/helpers/containers.ts`
-
-Example:
-```typescript
-// src/connections/adapters/newdb.ts
-import type { DatabaseAdapter } from './base.js';
-
-export class NewDBAdapter implements DatabaseAdapter {
-  readonly type = 'newdb';
-
-  async connect(config: ConnectionConfig): Promise<void> {
-    // Implementation
-  }
-
-  // ... other methods
-}
-
-// Register in manager.ts
-this.registerAdapterFactory('newdb', () => new NewDBAdapter());
-```
-
-### Debugging
-
-**Enable debug logging**:
-```bash
-node dist/index.js --debug --stdio
-```
-
-**Debug output location**:
-- Logs: `stderr` (structured JSON)
-- MCP protocol: `stdout`
-
-**Debug in VS Code**:
-```json
-{
-  "type": "node",
-  "request": "launch",
-  "name": "Debug sql-lens-mcp",
-  "program": "${workspaceFolder}/dist/index.js",
-  "args": ["--stdio", "--debug"],
-  "console": "integratedTerminal"
-}
-```
-
 ## Database Support
 
 | Database   | Status      | Notes                          |
@@ -1236,33 +623,26 @@ AI: SELECT * FROM 'sales.parquet' LIMIT 10
 
 Useful functions: `read_csv_auto('file.csv')`, `read_json_auto('file.json')`, glob patterns like `'data/*.parquet'`. File-backed databases work the same as SQLite (`"type": "duckdb", "path": "analytics.db"`), and `:memory:` gives a scratch analytics engine.
 
-## Architecture
+## Testing
 
+The project has comprehensive unit and integration test suites:
+
+```bash
+npm run test:unit   # Fast, no Docker required
+npm test            # Full suite - integration tests start Docker containers automatically
 ```
-src/
-├── connections/
-│   ├── adapters/          # Database-specific adapters
-│   ├── manager.ts         # Connection lifecycle
-│   ├── config.ts          # Config loading
-│   ├── persistence.ts     # Connection storage
-│   └── schema-introspector.ts
-├── security/
-│   ├── query-validator.ts # SQL validation
-│   ├── sandbox.ts         # Resource limits
-│   └── credential-store.ts
-├── sampling/
-│   ├── nl-to-sql.ts       # Natural language processing
-│   └── prompt-builder.ts
-├── cross-db/
-│   ├── planner.ts         # Query decomposition
-│   ├── executor.ts        # Parallel execution
-│   └── merger.ts          # Result merging
-├── visualization/
-│   ├── ascii-table.ts     # Table rendering
-│   └── ascii-chart.ts     # Chart rendering
-├── server.ts              # MCP server setup
-└── index.ts               # CLI entry point
-```
+
+See [docs/TESTING.md](docs/TESTING.md) for the full guide (Testcontainers, E2E databases, manual testing with MCP clients).
+
+## Documentation
+
+- [DEVELOPMENT.md](DEVELOPMENT.md) — Local development setup and workflow
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Code layout and components
+- [docs/TESTING.md](docs/TESTING.md) — Testing guide
+- [docs/clients/](docs/clients/) — Client setup guides
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) — Common issues and fixes
+- [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
+- [SECURITY.md](SECURITY.md) — Security policy
 
 ## Contributing
 

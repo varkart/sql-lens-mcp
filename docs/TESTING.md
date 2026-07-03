@@ -6,6 +6,7 @@ Comprehensive testing guide for sql-lens-mcp server.
 
 - [Quick Start](#quick-start)
 - [Automated Tests](#automated-tests)
+- [Test Containers](#test-containers)
 - [End-to-End Testing](#end-to-end-testing)
 - [Manual Testing](#manual-testing)
 - [Pre-Publication Checklist](#pre-publication-checklist)
@@ -18,20 +19,15 @@ Comprehensive testing guide for sql-lens-mcp server.
 Get started testing in under 5 minutes:
 
 ```bash
-# 1. Start test databases
-cd test/e2e
-docker compose up -d
-
-# 2. Wait for databases to be healthy (30-60 seconds)
-docker compose ps
-
-# 3. Build the project
-cd ../..
+# 1. Build the project
 npm run clean && npm run build
 
-# 4. Run tests
+# 2. Run tests (Docker Desktop must be running -
+#    integration tests start their own containers)
 npm test
 ```
+
+The Docker Compose setup in `test/e2e/` is only needed for [manual and end-to-end testing](#end-to-end-testing), not for `npm test`.
 
 ### Quick Manual Test with Claude Desktop
 
@@ -69,46 +65,79 @@ Show me all users from test-pg
 
 ## Automated Tests
 
+### Test Commands
+
+```bash
+# Run all tests (unit + integration)
+npm test
+
+# Unit tests only (fast, no Docker required)
+npm run test:unit
+
+# Integration tests only (requires Docker)
+npm run test:integration
+
+# Watch mode (auto-rerun on file changes)
+npm run test:watch
+```
+
 ### Unit Tests
 
-Test individual components in isolation:
+Test individual components in isolation (~1-2 seconds, no Docker required):
 
 ```bash
 npm run test:unit
 ```
 
-Located in `test/unit/`:
-- Connection managers
-- Database adapters
-- Query builders
-- Utility functions
+Located in `test/unit/`, covering:
+- Query validation and classification
+- Security checks (multi-statement, dangerous patterns)
+- Read-only mode enforcement
+- Statement type detection
+- Connection managers, adapters, and utility functions
 
 ### Integration Tests
 
-Test database adapters with real database engines:
+Test database adapters against real database engines (~30-60 seconds). Docker Desktop must be running; the containers themselves are started automatically by [Testcontainers](#test-containers):
 
 ```bash
-# Start test databases first
-cd test/e2e && docker compose up -d && cd ../..
-
-# Run integration tests
 npm run test:integration
 ```
 
-Located in `test/integration/`:
-- PostgreSQL adapter tests
-- MySQL adapter tests
-- SQLite adapter tests
-- MSSQL adapter tests
-- MariaDB adapter tests
+Located in `test/integration/`, covering:
+- Real database connections (PostgreSQL, MySQL, MariaDB, MSSQL)
+- Query execution with parameters
+- Schema introspection
+- Row limiting and pagination
+- Connection lifecycle management
+- Multi-database operations
+- Schema caching
 
-### All Tests
+---
 
-Run the complete test suite:
+## Test Containers
 
-```bash
-npm test
-```
+Integration tests automatically spin up Docker containers via Testcontainers — no manual `docker compose` step required:
+
+| Database   | Image                              | Version | Startup Time |
+|------------|------------------------------------|---------|--------------|
+| PostgreSQL | `postgres:16-alpine`               | 16      | ~5-10s       |
+| MySQL      | `mysql:8.4`                        | 8.4     | ~10-15s      |
+| MariaDB    | `mariadb:11.4`                     | 11.4    | ~10-15s      |
+| MSSQL      | `mcr.microsoft.com/mssql/server:2022` | 2022 | ~15-20s      |
+
+**Prerequisites**:
+- **Docker Desktop**: Must be running
+- **4GB+ RAM**: Recommended for running multiple containers
+- **Disk Space**: ~2GB for container images (downloaded once)
+
+**Container features**:
+- Automatic startup and cleanup
+- Parallel initialization for speed
+- Isolated per test run, no data persistence between runs
+- Random port assignment (no conflicts)
+
+**First-time test run**: the first `npm test` downloads the Docker images (~2GB, 2-3 minutes). Subsequent runs use the cached images and complete in ~30-60 seconds.
 
 ---
 
@@ -548,6 +577,20 @@ HAVING review_count > 0;
 ---
 
 ## Troubleshooting
+
+### Docker Not Running
+
+```
+Error: Cannot connect to Docker daemon
+Solution: Start Docker Desktop
+```
+
+### Slow Tests
+
+```
+First run: Normal (downloading container images)
+Subsequent runs: Check Docker Desktop resources
+```
 
 ### Port Already in Use
 

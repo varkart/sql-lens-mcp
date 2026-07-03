@@ -10,6 +10,8 @@ Thank you for your interest in contributing to sql-lens-mcp! This document provi
 - [Making Changes](#making-changes)
 - [Submitting Changes](#submitting-changes)
 - [Style Guidelines](#style-guidelines)
+- [Development Guide](DEVELOPMENT.md) — local setup, workflow, debugging
+- [Testing Guide](docs/TESTING.md) — test suites, Testcontainers, manual testing
 
 ## Code of Conduct
 
@@ -56,22 +58,7 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) that all contrib
 
 ## Development Setup
 
-### Environment
-
-Create a test configuration:
-```bash
-cp examples/configs/sql-lens-mcp.config.example.json sql-lens-mcp.config.json
-```
-
-### Running Locally
-
-```bash
-# Start TypeScript compiler in watch mode
-npm run dev
-
-# In another terminal, run the server
-npm start -- --debug
-```
+Local environment setup, the day-to-day workflow (watch mode, linting, formatting), debugging, and how to add a new database adapter are covered in the [Development Guide](DEVELOPMENT.md). For an overview of the code layout, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ### Running Tests
 
@@ -85,6 +72,8 @@ npm run test:integration
 # All tests
 npm test
 ```
+
+See the [Testing Guide](docs/TESTING.md) for Testcontainers details, E2E databases, and manual testing with MCP clients.
 
 ## Making Changes
 
@@ -332,27 +321,7 @@ We welcome:
 
 ## Development Tips
 
-### Debugging
-
-```bash
-# Enable debug logging
-npm start -- --debug
-
-# Debug specific modules
-DEBUG=sql-lens-mcp:* npm start
-
-# Debug in VS Code
-# Use the "Debug sql-lens-mcp" launch configuration
-```
-
-### Adding a New Database Adapter
-
-1. Create `src/connections/adapters/newdb.ts`
-2. Implement `DatabaseAdapter` interface
-3. Register in `ConnectionManager`
-4. Add to `test/helpers/containers.ts`
-5. Create integration tests
-6. Update documentation
+Debugging setup and the steps for adding a new database adapter are documented in the [Development Guide](DEVELOPMENT.md).
 
 ### Running Individual Tests
 
@@ -380,7 +349,7 @@ npm run format    # ✓ Code formatted
 - 💬 **Discussions**: Ask questions in GitHub Discussions
 - 🐛 **Issues**: Report bugs or request features
 - 📧 **Email**: [your-email] for private concerns
-- 📚 **Docs**: Check README and test/README.md
+- 📚 **Docs**: Check the [README](README.md), [Development Guide](DEVELOPMENT.md), and [Testing Guide](docs/TESTING.md)
 
 ## Recognition
 
