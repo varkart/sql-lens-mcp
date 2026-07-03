@@ -2,7 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { ConnectionManager } from './connections/manager.js';
 import { loadConnections } from './connections/persistence.js';
 import { logger } from './utils/logger.js';
-import type { ServerConfig, QueryHistoryEntry } from './utils/types.js';
+import type { ServerConfig, QueryHistoryEntry, StoredQueryResult } from './utils/types.js';
 import { registerAllTools } from './tools/index.js';
 import type { ToolContext } from './tools/types.js';
 
@@ -10,10 +10,12 @@ export type ServerContext = ToolContext;
 
 export function createServerContext(config?: ServerConfig): ServerContext {
   const queryHistory: QueryHistoryEntry[] = [];
+  const lastResults = new Map<string, StoredQueryResult>();
 
   return {
     manager: new ConnectionManager(),
     queryHistory,
+    lastResults,
     config,
   };
 }

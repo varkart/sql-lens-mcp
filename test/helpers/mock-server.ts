@@ -1,10 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { ConnectionManager } from '../../dist/connections/manager.js';
-import type { QueryHistoryEntry } from '../../dist/utils/types.js';
+import type { QueryHistoryEntry, StoredQueryResult } from '../../dist/utils/types.js';
 
 export interface MockContext {
   manager: ConnectionManager;
   queryHistory: QueryHistoryEntry[];
+  lastResults: Map<string, StoredQueryResult>;
 }
 
 /**
@@ -29,8 +30,9 @@ export function createMockServer(): McpServer {
 export function createMockContext(): MockContext {
   const manager = new ConnectionManager();
   const queryHistory: QueryHistoryEntry[] = [];
+  const lastResults = new Map<string, StoredQueryResult>();
 
-  return { manager, queryHistory };
+  return { manager, queryHistory, lastResults };
 }
 
 /**

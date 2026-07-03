@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import { DEFAULT_MAX_ROWS } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
@@ -67,34 +68,47 @@ export class SQLiteAdapter implements DatabaseAdapter {
       }
 
       const stmt = this.db.prepare(sql);
-      const executionTimeMs = Date.now() - startTime;
 
-      // Use run() for DDL/DML statements, all() for SELECT
+      // Use run() for DDL/DML statements, iterate() for SELECT
       if (stmt.reader) {
-        const rows = stmt.all(...params) as Record<string, unknown>[];
-
         const columns: ColumnInfo[] = stmt.columns().map(col => ({
           name: col.name,
           type: col.type || 'unknown',
           nullable: true,
         }));
 
-        const maxRows = options.maxRows || 100000;
-        const slicedRows = rows.slice(0, maxRows);
-        const truncated = rows.length > maxRows;
+        const offset = Math.max(0, options.offset ?? 0);
+        const maxRows = options.maxRows || DEFAULT_MAX_ROWS;
+        const rows: Record<string, unknown>[] = [];
+        let truncated = false;
+        let index = 0;
 
-        logger.debug('SQLite query executed', { rowCount: slicedRows.length, executionTimeMs });
+        for (const row of stmt.iterate(...params)) {
+          if (index++ < offset) {
+            continue;
+          }
+          if (rows.length === maxRows) {
+            truncated = true;
+            break;
+          }
+          rows.push(row as Record<string, unknown>);
+        }
+
+        const executionTimeMs = Date.now() - startTime;
+
+        logger.debug('SQLite query executed', { rowCount: rows.length, executionTimeMs });
 
         return {
           columns,
-          rows: slicedRows,
-          rowCount: slicedRows.length,
+          rows,
+          rowCount: rows.length,
           truncated,
           executionTimeMs,
           statement: sql,
         };
       } else {
         const result = stmt.run(...params);
+        const executionTimeMs = Date.now() - startTime;
 
         logger.debug('SQLite statement executed', { changes: result.changes, executionTimeMs });
 

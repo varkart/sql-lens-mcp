@@ -1,4 +1,5 @@
 import * as mariadb from 'mariadb';
+import { applyRowWindow } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
@@ -89,10 +90,8 @@ export class MariaDBAdapter implements DatabaseAdapter {
         nullable: true,
       })) : [];
 
-      const maxRows = options.maxRows || 100000;
       const rows = Array.isArray(result) ? result : [];
-      const slicedRows = rows.slice(0, maxRows);
-      const truncated = rows.length > maxRows;
+      const { rows: slicedRows, truncated } = applyRowWindow(rows, options);
 
       logger.debug('MariaDB query executed', { rowCount: slicedRows.length, executionTimeMs });
 

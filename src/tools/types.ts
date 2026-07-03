@@ -1,6 +1,6 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { ConnectionManager } from '../connections/manager.js';
-import type { QueryHistoryEntry, ServerConfig } from '../utils/types.js';
+import type { QueryHistoryEntry, ServerConfig, StoredQueryResult } from '../utils/types.js';
 
 /**
  * Context passed to all tools, resources, and prompts
@@ -8,6 +8,7 @@ import type { QueryHistoryEntry, ServerConfig } from '../utils/types.js';
 export interface ToolContext {
   manager: ConnectionManager;
   queryHistory: QueryHistoryEntry[];
+  lastResults: Map<string, StoredQueryResult>;
   config?: ServerConfig;
 }
 

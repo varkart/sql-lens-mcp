@@ -1,4 +1,5 @@
 import mssql from 'mssql';
+import { applyRowWindow } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
@@ -91,9 +92,7 @@ export class MSSQLAdapter implements DatabaseAdapter {
           }))
         : [];
 
-      const maxRows = options.maxRows || 100000;
-      const rows = (result.recordset || []).slice(0, maxRows);
-      const truncated = (result.recordset?.length || 0) > maxRows;
+      const { rows, truncated } = applyRowWindow(result.recordset || [], options);
 
       logger.debug('MSSQL query executed', { rowCount: rows.length, executionTimeMs });
 

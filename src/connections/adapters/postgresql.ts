@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { applyRowWindow } from './base.js';
 import type { DatabaseAdapter, ReadOnlyEnforcement } from './base.js';
 import type { ConnectionConfig, QueryResult, SchemaInfo, ExecuteOptions, ColumnInfo, TableInfo, ColumnDetail, ForeignKey } from '../../utils/types.js';
 import { ConnectionError, QueryError, TimeoutError } from '../../utils/errors.js';
@@ -92,13 +93,11 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
         nullable: true,
       }));
 
-      const maxRows = options.maxRows || 100000;
-      const rows = result.rows.slice(0, maxRows);
-      const truncated = result.rows.length > maxRows;
+      const { rows, truncated } = applyRowWindow(result.rows, options);
 
       // For INSERT/UPDATE/DELETE, use result.rowCount (affected rows)
-      // For SELECT, use rows.length (returned rows)
-      const actualRowCount = result.rowCount ?? rows.length;
+      // For SELECT, use rows.length (returned rows in the current window)
+      const actualRowCount = result.fields.length > 0 ? rows.length : (result.rowCount ?? 0);
 
       logger.debug('PostgreSQL query executed', { rowCount: actualRowCount, executionTimeMs });
 
