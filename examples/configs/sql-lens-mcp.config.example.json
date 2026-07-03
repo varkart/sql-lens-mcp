@@ -39,6 +39,12 @@
         "path": "./data/mydb.sqlite",
         "readOnly": true
       }
+    },
+    "local-analytics": {
+      "name": "Local DuckDB Analytics",
+      "env": "development",
+      "type": "duckdb",
+      "path": ":memory:"
     }
   }
 }

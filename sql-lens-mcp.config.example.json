@@ -19,6 +19,12 @@
       "database": "app_db",
       "user": "${MYSQL_USER}",
       "password": "${MYSQL_PASSWORD}"
+    },
+    "local-analytics": {
+      "name": "Local DuckDB Analytics",
+      "env": "development",
+      "type": "duckdb",
+      "path": ":memory:"
     }
   },
   "defaults": {
