@@ -9,6 +9,7 @@ import { MySQLAdapter } from '../../dist/connections/adapters/mysql.js';
 import { MariaDBAdapter } from '../../dist/connections/adapters/mariadb.js';
 import { MSSQLAdapter } from '../../dist/connections/adapters/mssql.js';
 import { OracleAdapter } from '../../dist/connections/adapters/oracle.js';
+import { DuckDBAdapter } from '../../dist/connections/adapters/duckdb.js';
 
 describe('Adapter Read-Only Unit Tests', () => {
   describe('read-only enforcement contract', () => {
@@ -17,6 +18,7 @@ describe('Adapter Read-Only Unit Tests', () => {
       new MySQLAdapter(),
       new MariaDBAdapter(),
       new SQLiteAdapter(),
+      new DuckDBAdapter(),
     ];
 
     const guardAdapters = [new MSSQLAdapter(), new OracleAdapter()];
