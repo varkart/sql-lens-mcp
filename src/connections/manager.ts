@@ -6,6 +6,7 @@ import { SQLiteAdapter } from './adapters/sqlite.js';
 import { MSSQLAdapter } from './adapters/mssql.js';
 import { MariaDBAdapter } from './adapters/mariadb.js';
 import { OracleAdapter } from './adapters/oracle.js';
+import { DuckDBAdapter } from './adapters/duckdb.js';
 import { SchemaIntrospector } from './schema-introspector.js';
 import { addConnection, removeConnection, updateConnection } from './persistence.js';
 import { ConnectionError } from '../utils/errors.js';
@@ -27,6 +28,7 @@ export class ConnectionManager {
     this.registerAdapterFactory('mssql', () => new MSSQLAdapter());
     this.registerAdapterFactory('mariadb', () => new MariaDBAdapter());
     this.registerAdapterFactory('oracle', () => new OracleAdapter());
+    this.registerAdapterFactory('duckdb', () => new DuckDBAdapter());
   }
 
   registerAdapterFactory(type: string, factory: AdapterFactory): void {

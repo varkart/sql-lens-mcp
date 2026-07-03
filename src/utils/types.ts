@@ -1,4 +1,4 @@
-export type DatabaseType = 'postgresql' | 'mysql' | 'sqlite' | 'mssql' | 'oracle' | 'mariadb';
+export type DatabaseType = 'postgresql' | 'mysql' | 'sqlite' | 'mssql' | 'oracle' | 'mariadb' | 'duckdb';
 export type ConnectionStatus = 'connected' | 'disconnected' | 'failed';
 export type StatementType = 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE' | 'CREATE' | 'DROP' | 'ALTER' | 'UNKNOWN';
 
