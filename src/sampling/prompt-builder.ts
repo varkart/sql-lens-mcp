@@ -98,6 +98,7 @@ function getDialectName(type: DatabaseType): string {
     mssql: 'Microsoft SQL Server',
     oracle: 'Oracle',
     mariadb: 'MariaDB',
+    duckdb: 'DuckDB',
   };
   return map[type] || type;
 }

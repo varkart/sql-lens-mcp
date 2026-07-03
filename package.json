@@ -32,6 +32,7 @@
     "mssql",
     "oracle",
     "mariadb",
+    "duckdb",
     "natural-language",
     "ai",
     "llm",
@@ -62,6 +63,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@duckdb/node-api": "^1.5.4-r.1",
     "@modelcontextprotocol/ext-apps": "^1.7.4",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "better-sqlite3": "^12.11.1",

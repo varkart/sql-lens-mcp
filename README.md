@@ -11,7 +11,7 @@
 
 **The AI-native database client. Query any database in plain English using Model Context Protocol.**
 
-Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io), sql-lens-mcp brings natural language database interactions to AI assistants. No SQL knowledge needed—just ask questions naturally and get instant answers. Works with PostgreSQL, MySQL, SQLite, and more.
+Built on [Model Context Protocol (MCP)](https://modelcontextprotocol.io), sql-lens-mcp brings natural language database interactions to AI assistants. No SQL knowledge needed—just ask questions naturally and get instant answers. Works with PostgreSQL, MySQL, SQLite, DuckDB, and more.
 
 ```
 You: "Show me users who signed up this week"
@@ -71,6 +71,7 @@ No SQL required—just ask naturally and sql-lens-mcp handles the rest.
 - **PostgreSQL** - Production-grade with full feature support
 - **MySQL / MariaDB** - Popular open-source databases
 - **SQLite** - Perfect for local development and testing
+- **DuckDB** - Analytics on Parquet, CSV, and JSON files
 - **MSSQL** - Microsoft SQL Server integration
 - **Oracle** - Enterprise database support
 
@@ -1239,9 +1240,21 @@ node dist/index.js --debug --stdio
 | PostgreSQL | ✅ Full     | Tested with v12+               |
 | MySQL      | ✅ Full     | Tested with v8.0+              |
 | SQLite     | ✅ Full     | Synchronous driver             |
+| DuckDB     | ✅ Full     | Embedded; queries Parquet/CSV  |
 | MSSQL      | ✅ Full     | Tested with SQL Server 2019+   |
 | MariaDB    | ✅ Full     | Compatible with MySQL driver   |
 | Oracle     | ⚠️  Optional | Requires manual oracledb install|
+
+### Querying Files with DuckDB
+
+DuckDB connections can query Parquet, CSV, and JSON files directly — no import step:
+
+```
+You: "Connect to an in-memory DuckDB database and show me the top 10 rows of sales.parquet"
+AI: SELECT * FROM 'sales.parquet' LIMIT 10
+```
+
+Useful functions: `read_csv_auto('file.csv')`, `read_json_auto('file.json')`, glob patterns like `'data/*.parquet'`. File-backed databases work the same as SQLite (`"type": "duckdb", "path": "analytics.db"`), and `:memory:` gives a scratch analytics engine.
 
 ## Architecture
 

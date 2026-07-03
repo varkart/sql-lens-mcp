@@ -27,6 +27,7 @@ const PARSER_DIALECTS: Record<DatabaseType, string> = {
   sqlite: 'Sqlite',
   mssql: 'TransactSQL',
   oracle: 'PostgresQL',
+  duckdb: 'PostgresQL',
 };
 
 const FALLBACK_DIALECTS = ['PostgresQL', 'MySQL'];

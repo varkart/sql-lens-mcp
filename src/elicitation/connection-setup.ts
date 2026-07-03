@@ -19,8 +19,10 @@ const DEFAULT_PORTS: Partial<Record<DatabaseType, number>> = {
   oracle: 1521,
 };
 
+const FILE_BASED_TYPES: DatabaseType[] = ['sqlite', 'duckdb'];
+
 export function getMissingConnectionParams(type: DatabaseType, provided: ConnectionParams): string[] {
-  if (type === 'sqlite') {
+  if (FILE_BASED_TYPES.includes(type)) {
     return provided.path === undefined ? ['path'] : [];
   }
 
@@ -32,13 +34,13 @@ function buildRequestedSchema(
   type: DatabaseType,
   provided: ConnectionParams
 ): { properties: Record<string, PrimitiveSchemaDefinition>; required: string[] } {
-  if (type === 'sqlite') {
+  if (FILE_BASED_TYPES.includes(type)) {
     return {
       properties: {
         path: {
           type: 'string',
           title: 'Database file path',
-          description: 'Path to the SQLite database file (use :memory: for an in-memory database)',
+          description: `Path to the ${type === 'duckdb' ? 'DuckDB' : 'SQLite'} database file (use :memory: for an in-memory database)`,
         },
       },
       required: ['path'],
