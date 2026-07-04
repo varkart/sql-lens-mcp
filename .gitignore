@@ -4,6 +4,7 @@ node_modules/
 
 # Build outputs
 dist/
+test-dist/
 *.tsbuildinfo
 test/**/*.js
 test/**/*.d.ts
