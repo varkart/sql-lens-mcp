@@ -14,7 +14,7 @@ jobs:
     name: PII scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Scan for personal email domains
         run: |
           PATTERN="[a-zA-Z0-9._%+\-]+@(gmail|outlook|hotmail|live|icloud|me|mac|yahoo|protonmail|pm)\.(com|net|org)"
